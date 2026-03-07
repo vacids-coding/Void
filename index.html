@@ -2,135 +2,59 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MK OBFUSCATOR • XTREME EDITION</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>MK OBFUSCATOR</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background: #0a0c0f;
+            background: #f8fafc;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 50% 50%, #ff00ff20 0%, transparent 50%);
-            animation: rotate 20s linear infinite;
-            z-index: 0;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            padding: 24px;
         }
 
         .container {
             width: 100%;
-            max-width: 1600px;
-            background: rgba(10, 12, 15, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 25px;
-            border: 2px solid #ff00ff40;
-            box-shadow: 0 0 50px #ff00ff80, inset 0 0 20px #ff00ff40;
-            position: relative;
-            z-index: 1;
-            animation: glow 3s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 50px #ff00ff80, inset 0 0 20px #ff00ff40; }
-            50% { box-shadow: 0 0 80px #00ffff80, inset 0 0 30px #00ffff60; }
+            max-width: 1400px;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            padding: 32px;
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
+            margin-bottom: 32px;
         }
 
-        .glitch {
-            font-size: clamp(3rem, 12vw, 6rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            position: relative;
-            text-shadow: 0.05em 0 0 #ff00ff, -0.05em -0.025em 0 #00ffff;
-            animation: glitch 725ms infinite;
-            letter-spacing: 5px;
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
-        .glitch span {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .glitch::before {
-            animation: glitch-top 1s linear infinite;
-            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-            -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-        }
-
-        @keyframes glitch-top {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-        }
-
-        .subtitle {
-            color: #ffffff80;
-            font-size: 1.2rem;
-            margin-top: 10px;
-            text-transform: uppercase;
-            letter-spacing: 10px;
-            text-shadow: 0 0 10px #ff00ff;
-        }
-
-        .matrix-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0.1;
-            font-size: 10px;
-            color: #00ff00;
-            overflow: hidden;
-            z-index: -1;
+        .header .subtitle {
+            color: #64748b;
+            font-size: 1rem;
+            margin-top: 8px;
+            font-weight: 400;
         }
 
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
+            gap: 24px;
+            margin-bottom: 24px;
         }
 
         @media (max-width: 968px) {
@@ -139,237 +63,191 @@
             }
         }
 
-        .editor-panel {
-            background: #050608;
+        .editor-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 20px;
             overflow: hidden;
-            border: 1px solid #ff00ff40;
-            box-shadow: 0 0 30px #ff00ff20;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
-        .editor-panel:hover {
-            border-color: #00ffff;
-            box-shadow: 0 0 40px #00ffff40;
+        .editor-card:hover {
+            border-color: #94a3b8;
         }
 
-        .panel-header {
-            background: linear-gradient(90deg, #ff00ff20, #00ffff20);
-            padding: 15px 20px;
+        .editor-header {
+            padding: 16px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #ff00ff40;
         }
 
-        .panel-header h3 {
-            color: white;
-            font-size: 1.3rem;
+        .editor-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px currentColor;
+            letter-spacing: 0.5px;
         }
-
-        .panel-header.input h3 { color: #00ffff; }
-        .panel-header.output h3 { color: #ff00ff; }
 
         .stats {
             display: flex;
-            gap: 15px;
+            gap: 12px;
+            color: #64748b;
+            font-size: 0.875rem;
         }
 
-        .stat-badge {
-            background: #0a0c0f;
-            padding: 5px 15px;
-            border-radius: 30px;
-            color: #00ffff;
-            border: 1px solid #00ffff40;
-            font-size: 0.9rem;
-            font-weight: bold;
+        .stats span {
+            background: white;
+            padding: 4px 12px;
+            border-radius: 100px;
+            border: 1px solid #e2e8f0;
         }
 
         textarea {
             width: 100%;
             height: 450px;
-            background: #0a0c0f;
-            border: none;
             padding: 20px;
-            color: #00ffff;
-            font-family: 'Courier New', monospace;
+            border: none;
+            background: white;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
             font-size: 14px;
             line-height: 1.6;
+            color: #1e293b;
             resize: vertical;
             outline: none;
-            caret-color: #ff00ff;
         }
 
         textarea::placeholder {
-            color: #ffffff20;
+            color: #94a3b8;
         }
 
-        .output textarea {
-            color: #ff00ff;
+        textarea[readonly] {
+            background: #f8fafc;
         }
 
-        .action-bar {
+        .actions {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
-            margin: 25px 0;
+            margin: 24px 0;
             flex-wrap: wrap;
         }
 
-        .mk-button {
-            padding: 15px 40px;
+        .btn {
+            padding: 12px 32px;
             border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(90deg, #ff00ff, #00ffff);
-            color: black;
-            border: 2px solid white;
-            box-shadow: 0 0 20px #ff00ff;
+            transition: all 0.2s ease;
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
         }
 
-        .mk-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, #ffffff80, transparent);
-            transition: left 0.5s ease;
-        }
-
-        .mk-button:hover::before {
-            left: 100%;
-        }
-
-        .mk-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px #00ffff;
-        }
-
-        .mk-button.secondary {
-            background: transparent;
+        .btn-primary {
+            background: #2563eb;
             color: white;
-            border: 2px solid #ff00ff;
-            box-shadow: 0 0 10px #ff00ff;
+            border: none;
         }
 
-        .mk-button.small {
-            padding: 10px 25px;
-            font-size: 1rem;
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px -5px #2563eb80;
         }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 25px;
+        .btn:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
         }
 
-        .feature-item {
-            background: #050608;
-            border: 1px solid #ff00ff40;
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            box-shadow: 0 0 15px #ff00ff20;
-            transition: all 0.3s ease;
+        .btn-small {
+            padding: 6px 16px;
+            font-size: 0.875rem;
         }
 
-        .feature-item.active {
-            border-color: #00ffff;
-            box-shadow: 0 0 20px #00ffff;
-            color: #00ffff;
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin: 24px 0 8px;
+        }
+
+        .feature {
+            padding: 6px 16px;
+            background: #f1f5f9;
+            color: #1e293b;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feature.active {
+            background: #2563eb10;
+            border-color: #2563eb;
+            color: #2563eb;
         }
 
         .footer {
             text-align: center;
-            margin-top: 30px;
-            color: #ffffff40;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
         }
 
-        .loading-overlay {
+        .loading {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #0a0c0fe0;
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            flex-direction: column;
-            gap: 30px;
         }
 
-        .loading-overlay.active {
+        .loading.active {
             display: flex;
         }
 
-        .cyber-spinner {
-            width: 100px;
-            height: 100px;
-            border: 5px solid transparent;
-            border-top-color: #ff00ff;
-            border-right-color: #00ffff;
-            border-bottom-color: #ff00ff;
-            border-left-color: #00ffff;
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #2563eb;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            box-shadow: 0 0 50px #ff00ff;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        .loading-text {
-            color: white;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 10px;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; text-shadow: 0 0 20px #ff00ff; }
-            50% { opacity: 0.5; text-shadow: 0 0 40px #00ffff; }
-        }
-
         .toast {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #050608;
-            border-left: 5px solid #00ffff;
+            bottom: 24px;
+            right: 24px;
+            background: #1e293b;
             color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            transform: translateX(500px);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transform: translateX(400px);
             transition: transform 0.3s ease;
             z-index: 10000;
-            border: 1px solid #00ffff;
-            box-shadow: 0 0 30px #00ffff;
+            box-shadow: 0 10px 30px -10px #00000040;
         }
 
         .toast.show {
@@ -377,32 +255,13 @@
         }
 
         .toast.error {
-            border-left-color: #ff00ff;
-            border-color: #ff00ff;
-            box-shadow: 0 0 30px #ff00ff;
-        }
-
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #ff00ff;
-            box-shadow: 0 0 10px #ff00ff;
-            animation: particleFloat 10s linear infinite;
-        }
-
-        @keyframes particleFloat {
-            from { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            to { transform: translateY(-100vh) rotate(360deg); opacity: 1; }
+            background: #dc2626;
         }
     </style>
 </head>
 <body>
-    <div class="matrix-bg" id="matrix"></div>
-    
-    <div class="loading-overlay" id="loading">
-        <div class="cyber-spinner"></div>
-        <div class="loading-text">OBFUSCATING</div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
     </div>
 
     <div class="toast" id="toast">
@@ -411,76 +270,56 @@
 
     <div class="container">
         <div class="header">
-            <div class="glitch" data-text="MK">MK</div>
-            <div class="subtitle">OBFUSCATOR • XTREME</div>
+            <h1>MK OBFUSCATOR</h1>
+            <div class="subtitle">professional lua code protection</div>
         </div>
 
         <div class="main-content">
-            <div class="editor-panel">
-                <div class="panel-header input">
-                    <h3>◈ INPUT ◈</h3>
+            <div class="editor-card">
+                <div class="editor-header">
+                    <h3>input</h3>
                     <div class="stats">
-                        <span class="stat-badge" id="inputLines">0 L</span>
-                        <span class="stat-badge" id="inputChars">0 C</span>
+                        <span id="inputLines">0 lines</span>
+                        <span id="inputChars">0 chars</span>
                     </div>
                 </div>
-                <textarea id="inputScript" placeholder="> ENTER YOUR LU4 SCRIPT"></textarea>
+                <textarea id="inputScript" placeholder="paste your lua script here..."></textarea>
             </div>
 
-            <div class="editor-panel">
-                <div class="panel-header output">
-                    <h3>◈ OUTPUT ◈</h3>
+            <div class="editor-card">
+                <div class="editor-header">
+                    <h3>output</h3>
                     <div class="stats">
-                        <button class="mk-button small" onclick="copyOutput()" style="padding: 5px 15px; font-size: 0.9rem;">📋 COPY</button>
-                        <button class="mk-button small" onclick="downloadOutput()" style="padding: 5px 15px; font-size: 0.9rem;">⬇️ SAVE</button>
+                        <button class="btn btn-small" onclick="copyOutput()">copy</button>
+                        <button class="btn btn-small" onclick="downloadOutput()">download</button>
                     </div>
                 </div>
-                <textarea id="outputScript" placeholder="> OBFUSC4TED SCRIPT" readonly></textarea>
+                <textarea id="outputScript" placeholder="obfuscated code will appear here..." readonly></textarea>
             </div>
         </div>
 
-        <div class="action-bar">
-            <button class="mk-button" onclick="obfuscate()">⚡ EXECUTE OBFUSCATION ⚡</button>
-            <button class="mk-button secondary" onclick="resetExample()">⟲ LOAD EXAMPLE</button>
-            <button class="mk-button secondary" onclick="clearAll()">🗑️ CLEAR</button>
+        <div class="actions">
+            <button class="btn btn-primary" onclick="obfuscate()">obfuscate</button>
+            <button class="btn" onclick="loadExample()">load example</button>
+            <button class="btn" onclick="clearAll()">clear</button>
         </div>
 
-        <div class="features-grid" id="features">
-            <div class="feature-item active">INIFINITE LOOP</div>
-            <div class="feature-item active">HEX STRINGS</div>
-            <div class="feature-item active">VARIABLE RENAME</div>
-            <div class="feature-item active">CONTROL FLOW</div>
-            <div class="feature-item active">DYNAMIC CODE</div>
-            <div class="feature-item active">STRING CONCAT</div>
-            <div class="feature-item active">JUNK CODE</div>
-            <div class="feature-item active">ANTI TAMPER</div>
+        <div class="features">
+            <span class="feature active">return wrapper</span>
+            <span class="feature active">hex strings</span>
+            <span class="feature active">variable rename</span>
+            <span class="feature active">infinite loops</span>
+            <span class="feature active">control flow</span>
+            <span class="feature active">no spaces</span>
         </div>
 
         <div class="footer">
-            MK OBFUSCATOR • XTREME EDITION • ALL TECHNIQUES ACTIVE
+            MK OBFUSCATOR • all techniques active
         </div>
     </div>
 
     <script>
-        // Matrix effect
-        function createMatrix() {
-            const matrix = document.getElementById('matrix');
-            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-            for (let i = 0; i < 100; i++) {
-                const span = document.createElement('span');
-                span.style.position = 'absolute';
-                span.style.left = Math.random() * 100 + '%';
-                span.style.top = Math.random() * 100 + '%';
-                span.style.color = '#00ff00';
-                span.style.opacity = Math.random() * 0.5;
-                span.style.animation = `float ${Math.random() * 10 + 5}s linear infinite`;
-                span.innerHTML = chars.charAt(Math.floor(Math.random() * chars.length));
-                matrix.appendChild(span);
-            }
-        }
-        createMatrix();
-
-        // Elementi DOM
+        // DOM elements
         const inputScript = document.getElementById('inputScript');
         const outputScript = document.getElementById('outputScript');
         const inputLines = document.getElementById('inputLines');
@@ -494,56 +333,45 @@
             const text = inputScript.value;
             const lines = text.split('\n').length;
             const chars = text.length;
-            inputLines.textContent = lines + 'L';
-            inputChars.textContent = chars + 'C';
+            inputLines.textContent = lines + ' line' + (lines !== 1 ? 's' : '');
+            inputChars.textContent = chars + ' char' + (chars !== 1 ? 's' : '');
         }
-
         inputScript.addEventListener('input', updateStats);
         updateStats();
 
-        // Show toast
-        function showToast(message, isError = false) {
-            toastMessage.textContent = message;
+        // Toast
+        function showToast(msg, isError) {
+            toastMessage.textContent = msg;
             toast.classList.add('show');
             if (isError) toast.classList.add('error');
             else toast.classList.remove('error');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Copy output
+        // Copy
         function copyOutput() {
-            if (!outputScript.value) {
-                showToast('NO OUTPUT GENERATED', true);
-                return;
-            }
+            if (!outputScript.value) return showToast('no output to copy', true);
             outputScript.select();
             document.execCommand('copy');
-            showToast('✓ COPIED TO CLIPBOARD');
+            showToast('copied to clipboard');
         }
 
-        // Download output
+        // Download
         function downloadOutput() {
-            if (!outputScript.value) {
-                showToast('NO OUTPUT GENERATED', true);
-                return;
-            }
-            const blob = new Blob([outputScript.value], { type: 'text/plain' });
+            if (!outputScript.value) return showToast('no output to download', true);
+            const blob = new Blob([outputScript.value], {type: 'text/plain'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'mk_obfuscated_' + Date.now() + '.lua';
+            a.download = 'mk_obfuscated.lua';
             a.click();
             URL.revokeObjectURL(url);
-            showToast('✓ FILE DOWNLOADED');
+            showToast('file downloaded');
         }
 
-        // Reset example
-        function resetExample() {
-            inputScript.value = `-- MK OBFUSCATOR EXAMPLE
-local function calculate(a, b)
+        // Load example
+        function loadExample() {
+            inputScript.value = `local function calculate(a, b)
     return a * b + (a - b)
 end
 
@@ -554,244 +382,186 @@ for i = 1, #data do
     total = total + calculate(data[i], i)
 end
 
-print("RESULT: " .. total)
-
-local function process(value)
-    if value > 100 then
-        return "HIGH"
-    elseif value > 50 then
-        return "MEDIUM"
-    else
-        return "LOW"
-    end
-end
-
-print(process(total))`;
+print("result: " .. total)`;
             updateStats();
-            showToast('✓ EXAMPLE LOADED');
+            showToast('example loaded');
         }
 
-        // Clear all
+        // Clear
         function clearAll() {
             inputScript.value = '';
             outputScript.value = '';
             updateStats();
-            showToast('✓ ALL CLEARED');
+            showToast('all cleared');
         }
 
-        // Generate random string
-        function randStr(length) {
+        // Random string
+        function randStr(len) {
             const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
+            let r = '';
+            for (let i = 0; i < len; i++) r += chars[Math.floor(Math.random() * chars.length)];
+            return r;
         }
 
-        // Convert to hex
+        // To hex
         function toHex(str) {
-            let hex = '';
+            let h = '';
             for (let i = 0; i < str.length; i++) {
-                hex += '\\x' + str.charCodeAt(i).toString(16).padStart(2, '0');
+                let c = str.charCodeAt(i).toString(16);
+                if (c.length < 2) c = '0' + c;
+                h += '\\x' + c;
             }
-            return hex;
+            return h;
         }
 
-        // Generate obfuscated code
+        // Generate table
+        function generateTable() {
+            let tbl = 'local A={';
+            for (let i = 0; i < 100; i++) {
+                let s = '';
+                for (let j = 0; j < Math.floor(Math.random() * 8) + 3; j++) {
+                    s += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+                }
+                s = btoa(s).replace(/=/g, '');
+                tbl += '`' + s + '`';
+                if (i < 99) tbl += ',';
+            }
+            tbl += '}';
+            return tbl;
+        }
+
+        // Generate infinite loops
+        function generateLoops() {
+            const a = randStr(4);
+            const b = randStr(4);
+            const c = randStr(4);
+            const d = randStr(4);
+            
+            let l = '';
+            l += 'local ' + a + ',' + b + ',' + c + ',' + d + '=0,1,2,3';
+            l += 'while true do';
+            l += a + '=' + a + '+1';
+            l += b + '=' + b + '+' + c;
+            l += 'if ' + a + '>1000 then';
+            l += a + '=0';
+            l += 'break';
+            l += 'end';
+            l += 'end';
+            
+            l += 'repeat';
+            l += 'local function ' + randStr(6) + '()';
+            l += 'local ' + randStr(4) + ',' + randStr(4) + '=1,2';
+            l += 'while true do';
+            l += randStr(4) + ',' + randStr(4) + '=' + randStr(4) + ',' + randStr(4);
+            l += 'if ' + randStr(4) + '()then break end';
+            l += 'end';
+            l += 'end';
+            l += 'until false';
+            
+            return l;
+        }
+
+        // Generate loader
+        function generateLoader() {
+            return 'local ' + randStr(4) + '=loadstring or load' +
+                   'local ' + randStr(4) + '=print' +
+                   'local ' + randStr(4) + '=error' +
+                   'local ' + randStr(4) + '=pcall';
+        }
+
+        // Main obfuscation
         function obfuscate() {
             const original = inputScript.value.trim();
+            if (!original) return showToast('no input script', true);
             
-            if (!original) {
-                showToast('INSERT SCRIPT FIRST', true);
-                return;
-            }
-
             loading.classList.add('show');
-
+            
             setTimeout(() => {
                 try {
                     const obfuscated = generateObfuscated(original);
                     outputScript.value = obfuscated;
-                    showToast('✓ OBFUSCATION COMPLETE');
+                    showToast('obfuscation complete');
                 } catch (e) {
-                    showToast('ERROR: ' + e.message, true);
+                    showToast('error: ' + e.message, true);
                 } finally {
                     loading.classList.remove('show');
                 }
-            }, 500);
+            }, 100);
         }
 
-        // Main obfuscation function
+        // Generate obfuscated code
         function generateObfuscated(code) {
-            const vars = {};
-            let varCounter = 0;
-            const varPrefix = ['_0x', '_0x0', '_0x1', '_0x2', '_0x3', '_0x4', '_K', '_G', '_D', '_A', '_r', '_y'];
+            const varMap = {};
+            let varCount = 0;
+            const prefixes = ['_0x','_0x0','_0x1','_0x2','_0x3','_0x4','_K','_G','_D','_A','_r','_y'];
             
-            // Generate random table
-            function generateTable() {
-                let table = 'local A={';
-                for (let i = 0; i < 50; i++) {
-                    let str = '';
-                    for (let j = 0; j < Math.floor(Math.random() * 8) + 2; j++) {
-                        str += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
-                    }
-                    str = btoa(str).replace(/=/g, '');
-                    table += '`' + str + '`';
-                    if (i < 49) table += ',';
-                }
-                table += '}';
-                return table;
-            }
-
-            // Generate infinite loop protection
-            function generateInfiniteLoop() {
-                let loop = '';
-                const l1 = randStr(4);
-                const l2 = randStr(4);
-                const l3 = randStr(4);
-                const l4 = randStr(4);
+            // Process code
+            let lines = code.split('\n');
+            let processed = [];
+            
+            for (let line of lines) {
+                if (line.trim() === '') continue;
                 
-                loop += `local ${l1},${l2},${l3},${l4}=0,1,2,3\n`;
-                loop += `while true do\n`;
-                loop += `    ${l1}=${l1}+1\n`;
-                loop += `    ${l2}=${l2}+${l3}\n`;
-                loop += `    ${l3}=${l3}*${l4}\n`;
-                loop += `    if ${l1}>1000 then\n`;
-                loop += `        ${l1}=0\n`;
-                loop += `        ${l2}=1\n`;
-                loop += `        break\n`;
-                loop += `    end\n`;
-                loop += `end\n\n`;
+                // Find local variables
+                line = line.replace(/local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, (m, v) => {
+                    if (!varMap[v]) varMap[v] = prefixes[varCount++ % prefixes.length] + Math.floor(Math.random() * 999);
+                    return 'local ' + varMap[v];
+                });
                 
-                loop += `repeat\n`;
-                loop += `    local function ${randStr(6)}()\n`;
-                loop += `        local ${randStr(4)},${randStr(4)}=math.random(),math.random()\n`;
-                loop += `        while true do\n`;
-                loop += `            ${randStr(4)},${randStr(4)}=${randStr(4)},${randStr(4)}\n`;
-                loop += `            if ${randStr(4)}>${randStr(4)} then break end\n`;
-                loop += `        end\n`;
-                loop += `        return ${randStr(4)}\n`;
-                loop += `    end\n`;
-                loop += `until false\n\n`;
-                
-                return loop;
-            }
-
-            // Generate dynamic loader
-            function generateLoader() {
-                const load = randStr(6);
-                const pr = randStr(6);
-                const err = randStr(6);
-                
-                return `local ${load}=loadstring or load\n` +
-                       `local ${pr}=print\n` +
-                       `local ${err}=error\n` +
-                       `local ${randStr(4)}=pcall\n\n`;
-            }
-
-            // Obfuscate main code
-            function obfuscateCode() {
-                let lines = code.split('\n');
-                let result = [];
-                
-                for (let line of lines) {
-                    if (line.trim() === '') {
-                        result.push('');
-                        continue;
-                    }
-                    
-                    // Rename variables
-                    let processed = line.replace(/local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, (match, p1) => {
-                        if (!vars[p1]) {
-                            vars[p1] = varPrefix[varCounter % varPrefix.length] + Math.floor(Math.random() * 999);
-                            varCounter++;
-                        }
-                        return 'local ' + vars[p1];
-                    });
-                    
-                    // Replace variable usage
-                    for (let [oldName, newName] of Object.entries(vars)) {
-                        const regex = new RegExp('\\b' + oldName + '\\b', 'g');
-                        processed = processed.replace(regex, newName);
-                    }
-                    
-                    // Convert strings to hex
-                    processed = processed.replace(/"([^"\\]*(\\.[^"\\]*)*)"/g, (match, p1) => {
-                        return '"' + toHex(p1) + '"';
-                    });
-                    
-                    processed = processed.replace(/'([^'\\]*(\\.[^'\\]*)*)'/g, (match, p1) => {
-                        return '"' + toHex(p1) + '"';
-                    });
-                    
-                    // String concatenation
-                    processed = processed.replace(/"\\x[0-9a-f]{2}\\x[0-9a-f]{2}[^"]*"/g, (match) => {
-                        if (match.length > 20) {
-                            let parts = [];
-                            for (let i = 0; i < match.length; i += 8) {
-                                parts.push(match.substr(i, 8) + '"');
-                                if (i + 8 < match.length) parts.push('"');
-                            }
-                            return parts.join('..');
-                        }
-                        return match;
-                    });
-                    
-                    result.push(processed);
+                // Replace variables
+                for (let [oldName, newName] of Object.entries(varMap)) {
+                    const regex = new RegExp('\\b' + oldName + '\\b', 'g');
+                    line = line.replace(regex, newName);
                 }
                 
-                return result.join('\n');
+                // Convert strings to hex
+                line = line.replace(/"([^"\\]*(\\.[^"\\]*)*)"/g, (m, s) => '"' + toHex(s) + '"');
+                line = line.replace(/'([^'\\]*(\\.[^'\\]*)*)'/g, (m, s) => '"' + toHex(s) + '"');
+                
+                processed.push(line);
             }
-
-            // Build final code
-            const obfuscatedMain = obfuscateCode();
-            const junk1 = randStr(8);
-            const junk2 = randStr(8);
-            const junk3 = randStr(8);
             
-            let final = `--[[ MK OBFUSCATOR XTREME EDITION ]]\n\n`;
-            final += generateTable() + '\n\n';
-            final += `local function ${randStr(6)}(K)return(A)[K-${Math.floor(Math.random() * 1000)}]end\n\n`;
+            // Build final code (ALL ATTACCATO)
+            let final = 'return(function(...)';
+            
+            // Add table
+            final += generateTable();
+            
+            // Add D function
+            final += 'local function ' + randStr(4) + '(K)return(A)[K-' + Math.floor(Math.random() * 1000) + ']end';
+            
+            // Add swap loops
+            final += 'for K,G in ipairs{{1,' + Math.floor(Math.random() * 500) + '},{1,' + 
+                     Math.floor(Math.random() * 300) + '},{' + Math.floor(Math.random() * 200) + ',' + 
+                     Math.floor(Math.random() * 500) + '}}do while(G)[1]<(G)[2]do(A)[(G)[1]],(A)[(G)[2]],(G)[1],(G)[2]=(A)[(G)[2]],(A)[(G)[1]],(G)[1]+1,(G)[2]-1 end end';
+            
+            // Add loader and loops
             final += generateLoader();
-            final += generateInfiniteLoop();
-            final += `-- MAIN PROTECTED CODE\n`;
-            final += obfuscatedMain + '\n\n';
+            final += generateLoops();
             
-            // Add final infinite loop wrapper
-            final += `-- FINAL PROTECTION LAYER\n`;
-            final += `local ${junk1},${junk2}=1,2\n`;
-            final += `while true do\n`;
-            final += `    ${junk1},${junk2}=${junk2},${junk1}\n`;
-            final += `    ${junk1}=${junk1}+${junk2}\n`;
-            final += `    ${junk2}=${junk2}*${junk1}\n`;
-            final += `    if ${junk1}>${junk2} then\n`;
-            final += `        ${junk1}=${junk2}\n`;
-            final += `        break\n`;
-            final += `    end\n`;
-            final += `end\n\n`;
+            // Add processed code (NO SPACES)
+            final += processed.join('').replace(/\s+/g, '');
             
-            final += `return function(...)\n`;
-            final += `    local ${randStr(4)}=${randStr(4)} or 0\n`;
-            final += `    ${randStr(4)}=${randStr(4)}+1\n`;
-            final += `    return ${randStr(4)}\n`;
-            final += `end`;
+            // Final infinite loop
+            const x = randStr(4);
+            const y = randStr(4);
+            final += 'local ' + x + ',' + y + '=1,2';
+            final += 'while true do';
+            final += x + ',' + y + '=' + y + ',' + x;
+            final += 'if ' + x + '>' + y + 'then';
+            final += x + '=' + y;
+            final += 'break';
+            final += 'end';
+            final += 'end';
+            
+            // Close return wrapper
+            final += 'end)(...)';
             
             return final;
         }
 
         // Initialize
-        resetExample();
-
-        // Add particles
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 10 + 's';
-            particle.style.background = Math.random() > 0.5 ? '#ff00ff' : '#00ffff';
-            document.body.appendChild(particle);
-        }
+        loadExample();
     </script>
 </body>
 </html>
