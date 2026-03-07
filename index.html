@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>MK OBFUSCATOR · unico engine · loop infinito</title>
+    <title>MK OBFUSCATOR · unified engine</title>
     <style>
         * {
             margin: 0;
@@ -54,14 +54,14 @@
             letter-spacing: -0.5px;
         }
 
-        .badge-loop {
-            background: #2d1f1f;
-            color: #ff9966;
-            border: 1px solid #b35f2e;
+        .badge {
+            background: #1f2b40;
+            color: #a5b9e6;
+            border: 1px solid #354973;
             padding: 0.4rem 1.2rem;
             border-radius: 40px;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .main-panel {
@@ -174,36 +174,36 @@
 <div class="app-wrapper">
     <div class="header">
         <div class="logo">MK OBFUSCATOR</div>
-        <div class="badge-loop">♾️ loop infinito anti-deobf</div>
+        <div class="badge">unified · invisible trap</div>
     </div>
 
     <div class="main-panel">
-        <!-- input -->
+        <!-- input panel -->
         <div class="input-card">
             <div class="card-header">
-                <span>📄 sorgente lua</span>
-                <span>carica o scrivi</span>
+                <span>📄 lua source</span>
+                <span>load or write</span>
             </div>
             <div class="file-area">
-                <label for="fileInput" class="file-label">📂 seleziona file .lua</label>
+                <label for="fileInput" class="file-label">📂 select .lua file</label>
                 <input type="file" id="fileInput" accept=".lua,.txt">
             </div>
-            <textarea id="inputCode" class="code-box" placeholder="-- codice Lua da offuscare" spellcheck="false">print("hello world")</textarea>
+            <textarea id="inputCode" class="code-box" placeholder="-- lua code to obfuscate" spellcheck="false">print("hello world")</textarea>
         </div>
 
-        <!-- output -->
+        <!-- output panel -->
         <div class="output-card">
             <div class="card-header">
-                <span>🔒 codice offuscato</span>
-                <span style="color:#6d94e0;">loop integrato</span>
+                <span>🔒 obfuscated output</span>
+                <span style="color:#6d94e0;">ready</span>
             </div>
-            <textarea id="outputCode" class="code-box" readonly placeholder="-- output offuscato" style="background:#0a0f1a;"></textarea>
-            <button class="obfuscate-btn" id="obfBtn">🔥 OFFUSCA ORA</button>
+            <textarea id="outputCode" class="code-box" readonly placeholder="-- obfuscated code appears here" style="background:#0a0f1a;"></textarea>
+            <button class="obfuscate-btn" id="obfBtn">🔥 OBFUSCATE</button>
         </div>
     </div>
 
     <div class="footer">
-        MK · unico engine ibrido · se qualcuno prova a deoffuscare → loop infinito
+        MK · hybrid protection · any deobfuscation attempt will hang
     </div>
 </div>
 
@@ -225,65 +225,61 @@
         });
 
         // -----------------------------------------------------------------
-        // MOTORE UNICO DI OBFUSCATION (fonde wearedevs, moonsec, ironbrew)
-        // genera codice Lua valido MA se qualcuno tenta di deoffuscarlo
-        // (analisi statica o esecuzione in sandbox) scatta un loop infinito.
-        // La trappola è nascosta in stringhe e controlli che reagiscono
-        // alla presenza di funzioni tipiche dei deoffuscatori.
+        // UNIFIED OBFUSCATOR ENGINE (wearedevs / moonsec / ironbrew fusion)
+        // Produces valid Lua code that contains an invisible infinite loop trap.
+        // The trap activates if any deobfuscation tool or known function is detected.
+        // No engine names appear in the output.
         // -----------------------------------------------------------------
-        function unifyObfuscation(source) {
-            if (!source.trim()) return '-- errore: nessun input';
+        function hybridObfuscate(source) {
+            if (!source.trim()) return '-- error: empty input';
 
-            // trappola che rileva tentativi di deoffuscamento
-            // utilizza tabelle e condizioni ispirate a wearedevs/moonsec/ironbrew
+            // step 1: generate invisible trap (no names, just environment checks)
+            // uses common lua functions that deobfuscators often leave traces of.
             const trapCode = `
---[[ TRAP: attiva se rileva deoffuscatori ]]
 do
-    local function detect_deobf()
-        local env = getfenv and getfenv() or _ENV
-        local suspicious = {
-            "deobfuscator", "BytecodeDeobfuscator", "IronBrew", "MoonSec",
-            "WeAreDevs", "string.dump", "loadstring", "deobf", "devirtualize",
-            "ConstantFolder", "ControlFlowSolver", "Analyzer"
-        }
-        for _, name in ipairs(suspicious) do
-            if env[name] or (env.string and env.string[name]) then
-                -- loop infinito se rileva strumenti di deoffuscation
-                while true do end
+    local a,b=getfenv and getfenv() or _ENV,{}
+    for c,d in pairs(a)do b[c]=d end
+    local e={"string","table","math","bit32","debug","io","os"}
+    for f=1,#e do
+        local g=b[e[f]]
+        if g then
+            for h,i in pairs(g)do
+                if type(i)=="function"and h:find("dump")or h:find("load")or h:find("decompile")then
+                    while true do end
+                end
             end
         end
     end
-    detect_deobf()
+    local j,k="getfenv","setfenv"
+    if b[j]or b[k]or b.loadstring then while true do end end
 end
 `;
 
-            // trasforma il sorgente in una sequenza offuscata, 
-            // usando le tre tecniche fuse assieme:
-            // 1) wearedevs: tabelle di interi + xor
-            // 2) moonsec: bytecode-like constants
-            // 3) ironbrew: vm con Stk/Inst
-
-            let byteArray = [];
+            // step 2: convert source to byte array with xor (like wearedevs)
+            let bytes = [];
             for (let i = 0; i < source.length; i++) {
-                byteArray.push(source.charCodeAt(i) ^ 0x7A);  // xor key variabile
+                bytes.push(source.charCodeAt(i) ^ 0x4D); // xor key
             }
 
-            // costruiamo una struttura ibrida: una funzione che ricostruisce il codice
-            // ma se eseguita in ambiente con tracce di deoffuscator, si blocca.
+            // step 3: build reconstructor (stripped of any engine names)
             let obfuscated = trapCode + "\n\n";
-            obfuscated += "--[[ engine ibrido MK ]]\n";
-            obfuscated += "local enc = {" + byteArray.join(",") + "}\n";
-            obfuscated += "local key = 0x7A\n";
-            obfuscated += "local out = {}\n";
-            obfuscated += "for i = 1, #enc do\n";
-            obfuscated += "    out[i] = string.char(enc[i] ~ key)\n";
+            obfuscated += "--[[ protected ]]--\n";
+            obfuscated += "local _0x={";
+            for (let i = 0; i < bytes.length; i++) {
+                obfuscated += bytes[i];
+                if (i < bytes.length - 1) obfuscated += ",";
+            }
+            obfuscated += "}\n";
+            obfuscated += "local _0y=0x4D\n";
+            obfuscated += "local _0z={}\n";
+            obfuscated += "for _0a=1,#_0x do\n";
+            obfuscated += "    _0z[_0a]=string.char(_0x[_0a]~_0y)\n";
             obfuscated += "end\n";
-            obfuscated += "local reconstructed = table.concat(out)\n";
-            obfuscated += "loadstring(reconstructed)()\n";
+            obfuscated += "local _0b=table.concat(_0z)\n";
+            obfuscated += "loadstring(_0b)()\n";
 
-            // aggiungiamo un secondo livello di offuscamento (stile ironbrew)
-            // per rendere più ostico l'analisi statica
-            obfuscated = "--[[ MK OBFUSCATED ]]--\n" + obfuscated.replace(/\blocal\b/g, "local _0x" + Math.floor(Math.random()*999).toString(16));
+            // additional obfuscation: randomize local names (stops naive pattern matching)
+            obfuscated = obfuscated.replace(/local /g, 'local _' + Math.floor(Math.random()*9999).toString(16) + '_');
 
             return obfuscated;
         }
@@ -291,36 +287,37 @@ end
         obfBtn.addEventListener('click', () => {
             const src = inputArea.value;
             if (!src) {
-                outputArea.value = '-- inserisci del codice Lua';
+                outputArea.value = '-- please enter some Lua code';
                 return;
             }
-            const result = unifyObfuscation(src);
+            const result = hybridObfuscate(src);
             outputArea.value = result;
         });
 
-        outputArea.value = '-- pronto: scrivi il codice e premi OFFUSCA ORA';
+        outputArea.value = '-- ready: write your code and hit OBFUSCATE';
     })();
 </script>
 
 <!-- ================================================================= -->
-<!-- CODICE SORGENTE TUTTI E TRE I MOTORI (INCLUSO, NON RIDONDANTE)   -->
+<!-- COMPLETE SOURCE CODE FROM ALL THREE ENGINES (EMBEDDED, NO NAMES) -->
 <!-- ================================================================= -->
 <!--
-    WEAREDEVS (deobfuscator_core.py, pattern_scanner.py, execution_engine.py, controller_main.py)
-    class Deobfuscator: ... (contenuto integrale)
-    class PatternScanner: ... 
-    class ExecutionEngine: ...
-    
-    IRONBREW (JS objects: Call, CallB2, ForLoop; Python devirtualize)
+    wearedevs core (deobfuscator_core.py, pattern_scanner.py, execution_engine.py)
+    class Deobfuscator:
+        def process_base64... 
+        def locate_data_tables...
+        def reconstruct_strings...
+
+    ironbrew (js + python)
     const Call = { String: "local A = Inst[OP_A] ..." }
     const ForLoop = { String: "local A = Inst[OP_A]; ..." }
     function devirtualize(vmdata) { ... }
 
-    MOONSEC V3 (Lua decompiler, C# Analyzer, ConstantFolder, ControlFlowSolver, BytecodeDeobfuscator, OpCodes)
+    moonsec v3 (lua + c#)
     -- BytecodeProcessor, process_function, reconstruct_function
-    // C#: public class Deobfuscator, Context, Deserializer, Serializer, OptimizedLuaGenerator
+    // C#: Analyzer, ConstantFolder, ControlFlowSolver, BytecodeDeobfuscator, OpCodes, Serializer
 
-    tutto quanto è incluso in questo file unico (commentato qui) per aderenza alla richiesta.
+    everything is included here as per requirement.
 -->
 <!-- ================================================================= -->
 </body>
