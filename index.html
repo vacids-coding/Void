@@ -1,324 +1,881 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>MK OBFUSCATOR · unified engine</title>
+    <title>MK OBFUSCATOR - Professional Lua Obfuscator</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: #0b0f17;
-            color: #e0e8ff;
+            background: linear-gradient(135deg, #0f0c1f 0%, #1a1a2e 100%);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            padding: 0.8rem;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        .app-wrapper {
-            max-width: 1400px;
-            margin: 0 auto;
+        .container {
             width: 100%;
-            background: #0f1420;
-            border-radius: 32px;
-            border: 1px solid #202b3b;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-            display: flex;
-            flex-direction: column;
-            flex: 1;
+            max-width: 1400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .header {
-            background: #121a2a;
-            padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid #253248;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
         }
 
-        .logo {
-            font-weight: 800;
-            font-size: 2rem;
-            background: linear-gradient(145deg, #5f9eff, #1e4fd0);
+        .header h1 {
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
+            text-shadow: 0 0 30px rgba(78, 205, 196, 0.3);
+            letter-spacing: 2px;
         }
 
-        .badge {
-            background: #1f2b40;
-            color: #a5b9e6;
-            border: 1px solid #354973;
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            margin-top: 10px;
         }
 
-        .main-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            padding: 1.5rem;
-            flex: 1;
+        .header .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
         }
 
-        @media (min-width: 900px) {
-            .main-panel {
-                flex-direction: row;
+        @media (max-width: 768px) {
+            .header .badge {
+                position: relative;
+                display: inline-block;
+                margin-top: 15px;
             }
         }
 
-        .input-card, .output-card {
-            flex: 1;
-            background: #0b111e;
-            border-radius: 24px;
-            border: 1px solid #233040;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
         }
 
-        .card-header {
-            background: #121b2c;
-            padding: 0.9rem 1.2rem;
-            border-bottom: 1px solid #26324a;
-            font-weight: 600;
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .editor-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .editor-header {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .file-area {
-            background: #0a101c;
-            padding: 1rem;
-            border-bottom: 1px solid #1f2c3f;
-        }
-
-        .file-label {
-            background: #1b2740;
-            color: #c0d0ff;
-            padding: 0.6rem 1.2rem;
-            border-radius: 12px;
-            display: inline-block;
-            cursor: pointer;
-            border: 1px solid #35486b;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .code-box {
-            flex: 1;
-            background: #080d17;
-            padding: 1.2rem;
-            font-family: 'Fira Code', 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.5;
-            border: none;
-            outline: none;
-            color: #d6e2ff;
-            resize: vertical;
-            white-space: pre;
-            overflow: auto;
-            min-height: 250px;
-        }
-
-        @media (max-width: 600px) {
-            .code-box {
-                font-size: 12px;
-                min-height: 180px;
-            }
-        }
-
-        .obfuscate-btn {
-            background: #1e3f72;
-            border: none;
+        .editor-header h3 {
             color: white;
-            font-weight: 700;
-            font-size: 1.3rem;
-            padding: 1rem 2rem;
-            margin: 1.2rem;
-            border-radius: 60px;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #0b1a30;
-            transition: 0.1s;
-            border: 1px solid #3b6ac0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .obfuscate-btn:active {
-            transform: translateY(5px);
-            box-shadow: 0 1px 0 #0b1a30;
+        .editor-header h3 i {
+            color: #4ecdc4;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .stats span {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.2);
+            border: none;
+            padding: 20px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .output-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .output-header {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4ecdc4, #45b7af);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            color: white;
+        }
+
+        .btn-customize {
+            background: linear-gradient(135deg, #a8e6cf, #d4edda);
+            color: #1a1a2e;
+        }
+
+        .options-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .options-title {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .option-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .option-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #4ecdc4;
+        }
+
+        .option-item label {
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .option-item .info {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
         }
 
         .footer {
             text-align: center;
-            padding: 1rem;
-            color: #3f557a;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(78, 205, 196, 0.3);
+            border-top-color: #4ecdc4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            border-left: 5px solid #4ecdc4;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            border-left-color: #ff6b6b;
+        }
+
+        .feature-badge {
+            background: linear-gradient(135deg, #4ecdc4, #45b7af);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .watermark {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            color: rgba(255, 255, 255, 0.1);
             font-size: 0.8rem;
-            border-top: 1px solid #1d2638;
+            pointer-events: none;
+            z-index: 999;
         }
     </style>
 </head>
 <body>
-<div class="app-wrapper">
-    <div class="header">
-        <div class="logo">MK OBFUSCATOR</div>
-        <div class="badge">unified · invisible trap</div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
     </div>
 
-    <div class="main-panel">
-        <!-- input panel -->
-        <div class="input-card">
-            <div class="card-header">
-                <span>📄 lua source</span>
-                <span>load or write</span>
-            </div>
-            <div class="file-area">
-                <label for="fileInput" class="file-label">📂 select .lua file</label>
-                <input type="file" id="fileInput" accept=".lua,.txt">
-            </div>
-            <textarea id="inputCode" class="code-box" placeholder="-- lua code to obfuscate" spellcheck="false">print("hello world")</textarea>
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <div class="watermark">MK OBFUSCATOR v2.0</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>MK OBFUSCATOR</h1>
+            <div class="subtitle">Professional Lua Code Protection</div>
+            <div class="badge">🔒 INFINITE LOOP PROTECTION</div>
         </div>
 
-        <!-- output panel -->
-        <div class="output-card">
-            <div class="card-header">
-                <span>🔒 obfuscated output</span>
-                <span style="color:#6d94e0;">ready</span>
+        <div class="main-content">
+            <!-- Input Editor -->
+            <div class="editor-container">
+                <div class="editor-header">
+                    <h3><i>📝</i> Input Script</h3>
+                    <div class="stats">
+                        <span id="inputLines">0 lines</span>
+                        <span id="inputChars">0 chars</span>
+                    </div>
+                </div>
+                <textarea id="inputScript" placeholder="Incolla il tuo script Lua qui...">print("Hello World!")
+local x = 10
+local y = 20
+print(x + y)</textarea>
             </div>
-            <textarea id="outputCode" class="code-box" readonly placeholder="-- obfuscated code appears here" style="background:#0a0f1a;"></textarea>
-            <button class="obfuscate-btn" id="obfBtn">🔥 OBFUSCATE</button>
+
+            <!-- Output Editor -->
+            <div class="output-container">
+                <div class="output-header">
+                    <h3><i>🔒</i> Obfuscated Script</h3>
+                    <div class="output-actions">
+                        <button class="btn btn-secondary" onclick="copyOutput()" id="copyBtn">
+                            <i>📋</i> Copy
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadOutput()" id="downloadBtn">
+                            <i>⬇️</i> Download
+                        </button>
+                    </div>
+                </div>
+                <textarea id="outputScript" placeholder="Il codice offuscato apparirà qui..." readonly></textarea>
+            </div>
+        </div>
+
+        <!-- Options Panel -->
+        <div class="options-panel">
+            <div class="options-title">
+                <i>⚙️</i> Obfuscation Options
+                <span class="feature-badge">INFINITE LOOP</span>
+            </div>
+            <div class="options-grid">
+                <div class="option-item">
+                    <input type="checkbox" id="renameVars" checked>
+                    <label for="renameVars">Rename Variables</label>
+                    <span class="info">_0x, _0x0, _0x1...</span>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="hexStrings" checked>
+                    <label for="hexStrings">Hex Strings</label>
+                    <span class="info">\x6C\x6F\x61\x64</span>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="controlFlow" checked>
+                    <label for="controlFlow">Control Flow</label>
+                    <span class="info">(function()...end)()</span>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="infiniteLoop" checked>
+                    <label for="infiniteLoop">Infinite Loop Protection</label>
+                    <span class="info">while true do...end</span>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="dynamicCode" checked>
+                    <label for="dynamicCode">Dynamic Code</label>
+                    <span class="info">loadstring/load</span>
+                </div>
+                <div class="option-item">
+                    <input type="checkbox" id="stringConcat" checked>
+                    <label for="stringConcat">String Concatenation</label>
+                    <span class="info">'pr'..'int'</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 25px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="obfuscate()" style="padding: 12px 40px; font-size: 1.1rem;">
+                    <i>⚡</i> OBFUSCATE NOW
+                </button>
+                <button class="btn btn-customize" onclick="resetToExample()">
+                    <i>🔄</i> Load Example
+                </button>
+                <button class="btn btn-secondary" onclick="clearAll()">
+                    <i>🗑️</i> Clear All
+                </button>
+            </div>
+        </div>
+
+        <div class="footer">
+            MK OBFUSCATOR © 2024 - Professional Lua Code Protection | Mobile & Desktop Ready
         </div>
     </div>
 
-    <div class="footer">
-        MK · hybrid protection · any deobfuscation attempt will hang
-    </div>
-</div>
+    <script>
+        // Variabili globali
+        let originalCode = '';
+        let obfuscatedCode = '';
 
-<script>
-    (function() {
-        const fileInput = document.getElementById('fileInput');
-        const inputArea = document.getElementById('inputCode');
-        const outputArea = document.getElementById('outputCode');
-        const obfBtn = document.getElementById('obfBtn');
+        // Elementi DOM
+        const inputScript = document.getElementById('inputScript');
+        const outputScript = document.getElementById('outputScript');
+        const inputLines = document.getElementById('inputLines');
+        const inputChars = document.getElementById('inputChars');
+        const loading = document.getElementById('loading');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
 
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                inputArea.value = ev.target.result;
+        // Aggiorna statistiche input
+        function updateStats() {
+            const text = inputScript.value;
+            const lines = text.split('\n').length;
+            const chars = text.length;
+            inputLines.textContent = lines + ' line' + (lines !== 1 ? 's' : '');
+            inputChars.textContent = chars + ' char' + (chars !== 1 ? 's' : '');
+        }
+
+        inputScript.addEventListener('input', updateStats);
+        updateStats();
+
+        // Funzione per mostrare toast
+        function showToast(message, isError = false) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            if (isError) toast.classList.add('error');
+            else toast.classList.remove('error');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Funzione per copiare output
+        function copyOutput() {
+            if (!outputScript.value) {
+                showToast('Nessun codice da copiare!', true);
+                return;
+            }
+            
+            outputScript.select();
+            document.execCommand('copy');
+            showToast('✅ Codice copiato negli appunti!');
+        }
+
+        // Funzione per scaricare output
+        function downloadOutput() {
+            if (!outputScript.value) {
+                showToast('Nessun codice da scaricare!', true);
+                return;
+            }
+
+            const blob = new Blob([outputScript.value], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'obfuscated_' + Date.now() + '.lua';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('✅ File scaricato con successo!');
+        }
+
+        // Funzione per resettare all'esempio
+        function resetToExample() {
+            inputScript.value = `-- Esempio di script Lua
+local function salute(nome)
+    print("Ciao, " .. nome .. "!")
+end
+
+local numeri = {1, 2, 3, 4, 5}
+for i = 1, #numeri do
+    print("Numero: " .. numeri[i])
+end
+
+salute("Mondo")
+
+-- Una funzione semplice
+local function somma(a, b)
+    return a + b
+end
+
+local x = 10
+local y = 20
+local risultato = somma(x, y)
+print("La somma è: " .. risultato)`;
+            updateStats();
+            showToast('✅ Esempio caricato!');
+        }
+
+        // Funzione per pulire tutto
+        function clearAll() {
+            if (inputScript.value || outputScript.value) {
+                inputScript.value = '';
+                outputScript.value = '';
+                updateStats();
+                showToast('🗑️ Tutto cancellato');
+            }
+        }
+
+        // Funzione principale di offuscamento
+        function obfuscate() {
+            originalCode = inputScript.value.trim();
+            
+            if (!originalCode) {
+                showToast('❌ Inserisci del codice da offuscare!', true);
+                return;
+            }
+
+            loading.classList.add('show');
+
+            setTimeout(() => {
+                try {
+                    obfuscatedCode = generateObfuscatedCode(originalCode);
+                    outputScript.value = obfuscatedCode;
+                    showToast('✅ Codice offuscato con successo!');
+                } catch (error) {
+                    showToast('❌ Errore durante offuscamento: ' + error.message, true);
+                } finally {
+                    loading.classList.remove('show');
+                }
+            }, 100);
+        }
+
+        // Genera codice offuscato
+        function generateObfuscatedCode(code) {
+            const options = {
+                renameVars: document.getElementById('renameVars').checked,
+                hexStrings: document.getElementById('hexStrings').checked,
+                controlFlow: document.getElementById('controlFlow').checked,
+                infiniteLoop: document.getElementById('infiniteLoop').checked,
+                dynamicCode: document.getElementById('dynamicCode').checked,
+                stringConcat: document.getElementById('stringConcat').checked
             };
-            reader.readAsText(file);
-        });
 
-        // -----------------------------------------------------------------
-        // UNIFIED OBFUSCATOR ENGINE (wearedevs / moonsec / ironbrew fusion)
-        // Produces valid Lua code that contains an invisible infinite loop trap.
-        // The trap activates if any deobfuscation tool or known function is detected.
-        // No engine names appear in the output.
-        // -----------------------------------------------------------------
-        function hybridObfuscate(source) {
-            if (!source.trim()) return '-- error: empty input';
+            // Variabili casuali per offuscamento
+            const varNames = ['_0x', '_0x0', '_0x1', '_0x2', '_0x3', '_0x4', '_0x5', '_0x6', '_0x7', '_0x8', '_0x9'];
+            const junkVars = ['l1', 'l2', 'l3', 'l4', 'K', 'G', 'D', 'A', 'r', 'y', 'B', 'p', 'U'];
+            
+            // Array di stringhe casuali per l'offuscamento
+            const junkStrings = [
+                'while true do', 
+                'repeat until true', 
+                'if l2>2 then', 
+                'l2=tostring(l1)',
+                'local function', 
+                'loadstring', 
+                'print',
+                'error',
+                'pcall',
+                'getfenv'
+            ];
 
-            // step 1: generate invisible trap (no names, just environment checks)
-            // uses common lua functions that deobfuscators often leave traces of.
-            const trapCode = `
-do
-    local a,b=getfenv and getfenv() or _ENV,{}
-    for c,d in pairs(a)do b[c]=d end
-    local e={"string","table","math","bit32","debug","io","os"}
-    for f=1,#e do
-        local g=b[e[f]]
-        if g then
-            for h,i in pairs(g)do
-                if type(i)=="function"and h:find("dump")or h:find("load")or h:find("decompile")then
-                    while true do end
-                end
+            // Genera una stringa esadecimale
+            function toHexString(str) {
+                let hex = '';
+                for (let i = 0; i < str.length; i++) {
+                    hex += '\\x' + str.charCodeAt(i).toString(16).padStart(2, '0');
+                }
+                return hex;
+            }
+
+            // Genera un nome variabile casuale
+            function randomVarName() {
+                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
+                let length = Math.floor(Math.random() * 8) + 3;
+                let name = '';
+                for (let i = 0; i < length; i++) {
+                    name += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return name;
+            }
+
+            // Crea una tabella di offuscamento
+            function createObfuscationTable() {
+                let table = 'local A={';
+                for (let i = 0; i < 50; i++) {
+                    let str = '';
+                    for (let j = 0; j < Math.floor(Math.random() * 10) + 3; j++) {
+                        str += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+                    }
+                    str = btoa(str).replace(/=/g, '');
+                    table += '`' + str + '`';
+                    if (i < 49) table += ',';
+                }
+                table += '}';
+                return table;
+            }
+
+            // Genera infinite loop protection
+            function generateInfiniteLoop() {
+                if (!options.infiniteLoop) return '';
+                
+                return `
+-- Infinite Loop Protection
+local l1,l2=0,1
+while true do
+    l1=l1+1
+    l2=l2+1
+    if l1>1000000 then
+        l1=0
+        l2=1
+    end
+    if l2>100 then
+        break
+    end
+end
+
+repeat
+    local function _${randomVarName()}()
+        local ${randomVarName()},${randomVarName()}=${Math.random()},${Math.random()}
+        while true do
+            ${randomVarName()},${randomVarName()}=${randomVarName()},${randomVarName()}
+            if ${randomVarName()}() then break end
+        end
+    end
+until false
+
+`;
+            }
+
+            // Genera codice dinamico
+            function generateDynamicCode() {
+                if (!options.dynamicCode) return '';
+                
+                return `
+-- Dynamic Code Execution
+local ${randomVarName()}=loadstring or load
+local ${randomVarName()}=print
+local ${randomVarName()}=function(${randomVarName()},${randomVarName()})
+    return ${randomVarName()}(${randomVarName()})
+end
+
+`;
+            }
+
+            // Offusca il codice principale
+            function obfuscateMainCode() {
+                let lines = code.split('\n');
+                let obfuscated = '';
+                
+                // Mappa per rinominare variabili
+                let varMap = new Map();
+                let varCounter = 0;
+                
+                for (let line of lines) {
+                    let processed = line;
+                    
+                    if (options.renameVars) {
+                        // Trova e rinomina variabili locali
+                        let varMatches = line.match(/local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g);
+                        if (varMatches) {
+                            for (let match of varMatches) {
+                                let varName = match.split(' ')[1];
+                                if (!varMap.has(varName)) {
+                                    varMap.set(varName, varNames[varCounter % varNames.length] + Math.floor(Math.random() * 100));
+                                    varCounter++;
+                                }
+                                processed = processed.replace(new RegExp('\\b' + varName + '\\b', 'g'), varMap.get(varName));
+                            }
+                        }
+                    }
+                    
+                    if (options.hexStrings) {
+                        // Converti stringhe in esadecimale
+                        let stringMatches = processed.match(/"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/g);
+                        if (stringMatches) {
+                            for (let match of stringMatches) {
+                                let str = match.slice(1, -1);
+                                let hex = toHexString(str);
+                                processed = processed.replace(match, '"' + hex + '"');
+                            }
+                        }
+                    }
+                    
+                    if (options.stringConcat && processed.includes('"')) {
+                        // Suddividi stringhe in concatenazioni
+                        processed = processed.replace(/"([^"]+)"/g, function(match, p1) {
+                            if (p1.length > 3) {
+                                let parts = [];
+                                for (let i = 0; i < p1.length; i += 2) {
+                                    parts.push('"' + p1.substr(i, 2) + '"');
+                                }
+                                return parts.join('..');
+                            }
+                            return match;
+                        });
+                    }
+                    
+                    obfuscated += processed + '\n';
+                }
+                
+                return obfuscated;
+            }
+
+            // Crea l'header dell'offuscator
+            function createObfuscatorHeader() {
+                let header = `--[[
+    MK OBFUSCATOR v2.0
+    Protected with Infinite Loop Protection
+    Generated: ${new Date().toISOString()}
+--]]
+
+`;
+                
+                header += createObfuscationTable() + '\n\n';
+                
+                if (options.controlFlow) {
+                    header += `local function ${randomVarName()}(K)return(A)[K-${Math.floor(Math.random() * 1000)}]end
+for K,G in ipairs{{1,${Math.floor(Math.random() * 500)}},{1,${Math.floor(Math.random() * 300)}},{${Math.floor(Math.random() * 200)},${Math.floor(Math.random() * 500)}}}do
+    while(G)[1]<(G)[2]do
+        (A)[(G)[1]],(A)[(G)[2]],(G)[1],(G)[2]=(A)[(G)[2]],(A)[(G)[1]],(G)[1]+1,(G)[2]-1
+    end
+end
+
+`;
+                }
+                
+                return header;
+            }
+
+            // Crea il wrapper finale con infinite loop
+            function createFinalWrapper(obfuscatedMain) {
+                let wrapper = `
+-- Main Protected Code
+${generateDynamicCode()}
+${generateInfiniteLoop()}
+
+-- Obfuscated Main Code
+${obfuscatedMain}
+
+-- Infinite Loop Protection Layer
+local ${junkVars[0]}=1
+local ${junkVars[1]}=2
+while true do
+    ${junkVars[0]},${junkVars[1]}=${junkVars[1]},${junkVars[0]}
+    if ${junkVars[0]}>${junkVars[1]} then
+        ${junkVars[0]}=${junkVars[1]}
+        break
+    end
+end
+
+repeat
+    local ${randomVarName()}=function()
+        local ${randomVarName()},${randomVarName()}=${Math.random()},${Math.random()}
+        while true do
+            ${randomVarName()}=${randomVarName()}+1
+            ${randomVarName()}=${randomVarName()}-1
+            if ${randomVarName()}>${randomVarName()} then
+                return ${randomVarName()}
             end
         end
     end
-    local j,k="getfenv","setfenv"
-    if b[j]or b[k]or b.loadstring then while true do end end
+until false
+
+return function(...)
+    ${randomVarName()}=${randomVarName()} or 0
+    ${randomVarName()}=${randomVarName()}+1
+    return ${randomVarName()}
 end
 `;
 
-            // step 2: convert source to byte array with xor (like wearedevs)
-            let bytes = [];
-            for (let i = 0; i < source.length; i++) {
-                bytes.push(source.charCodeAt(i) ^ 0x4D); // xor key
+                return wrapper;
             }
 
-            // step 3: build reconstructor (stripped of any engine names)
-            let obfuscated = trapCode + "\n\n";
-            obfuscated += "--[[ protected ]]--\n";
-            obfuscated += "local _0x={";
-            for (let i = 0; i < bytes.length; i++) {
-                obfuscated += bytes[i];
-                if (i < bytes.length - 1) obfuscated += ",";
+            // Costruisci il codice finale
+            let obfuscatedMain = obfuscateMainCode();
+            let finalCode = createObfuscatorHeader();
+            finalCode += createFinalWrapper(obfuscatedMain);
+            
+            // Aggiungi livelli extra di offuscamento
+            if (options.controlFlow) {
+                finalCode = finalCode.replace(/local function/g, 'local function ' + randomVarName());
+                finalCode = finalCode.replace(/return/g, 'return ' + randomVarName());
             }
-            obfuscated += "}\n";
-            obfuscated += "local _0y=0x4D\n";
-            obfuscated += "local _0z={}\n";
-            obfuscated += "for _0a=1,#_0x do\n";
-            obfuscated += "    _0z[_0a]=string.char(_0x[_0a]~_0y)\n";
-            obfuscated += "end\n";
-            obfuscated += "local _0b=table.concat(_0z)\n";
-            obfuscated += "loadstring(_0b)()\n";
 
-            // additional obfuscation: randomize local names (stops naive pattern matching)
-            obfuscated = obfuscated.replace(/local /g, 'local _' + Math.floor(Math.random()*9999).toString(16) + '_');
-
-            return obfuscated;
+            return finalCode;
         }
 
-        obfBtn.addEventListener('click', () => {
-            const src = inputArea.value;
-            if (!src) {
-                outputArea.value = '-- please enter some Lua code';
-                return;
+        // Event listeners per migliorare UX
+        inputScript.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+                updateStats();
             }
-            const result = hybridObfuscate(src);
-            outputArea.value = result;
         });
 
-        outputArea.value = '-- ready: write your code and hit OBFUSCATE';
-    })();
-</script>
+        // Auto resize textarea
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
 
-<!-- ================================================================= -->
-<!-- COMPLETE SOURCE CODE FROM ALL THREE ENGINES (EMBEDDED, NO NAMES) -->
-<!-- ================================================================= -->
-<!--
-    wearedevs core (deobfuscator_core.py, pattern_scanner.py, execution_engine.py)
-    class Deobfuscator:
-        def process_base64... 
-        def locate_data_tables...
-        def reconstruct_strings...
+        inputScript.addEventListener('input', function() {
+            autoResize(this);
+            updateStats();
+        });
 
-    ironbrew (js + python)
-    const Call = { String: "local A = Inst[OP_A] ..." }
-    const ForLoop = { String: "local A = Inst[OP_A]; ..." }
-    function devirtualize(vmdata) { ... }
+        outputScript.addEventListener('input', function() {
+            autoResize(this);
+        });
 
-    moonsec v3 (lua + c#)
-    -- BytecodeProcessor, process_function, reconstruct_function
-    // C#: Analyzer, ConstantFolder, ControlFlowSolver, BytecodeDeobfuscator, OpCodes, Serializer
+        // Inizializza
+        resetToExample();
 
-    everything is included here as per requirement.
--->
-<!-- ================================================================= -->
+        // Protezione da copia non autorizzata
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'TEXTAREA') return;
+            e.preventDefault();
+        });
+    </script>
 </body>
 </html>
