@@ -1,490 +1,360 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MK OBFUSCATOR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>MK OBFUSCATOR 1.0</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
         }
-
+        
         body {
-            background: #000000;
+            background-color: #0a0a0a;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
-
+        
         .container {
             width: 100%;
-            max-width: 1400px;
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            border-radius: 12px;
+            max-width: 1200px;
+            background-color: #0d0d0d;
+            border: 1px solid #1a4c7a;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 40, 80, 0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            border-bottom: 1px solid #1a4c7a;
+            padding-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #2a6fa5;
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        
+        .header h1 span {
+            color: #ffffff;
+            font-weight: 300;
+        }
+        
+        .header p {
+            color: #4a7a9c;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .input-section, .output-section {
+            flex: 1 1 300px;
+            background-color: #111111;
+            border: 1px solid #1a3f5a;
+            border-radius: 20px;
             padding: 20px;
         }
-
-        .header {
-            margin-bottom: 20px;
+        
+        .section-title {
+            color: #2a6fa5;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 8px;
         }
-
-        .header h1 {
-            color: #0066ff;
-            font-size: 2rem;
-            font-weight: 600;
+        
+        .section-title::before {
+            content: "◉";
+            color: #1a4c7a;
+            font-size: 1rem;
         }
-
-        .header span {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .box {
-            background: #0d0d0d;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .box-header {
-            background: #111111;
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #1a1a1a;
-        }
-
-        .box-header span {
-            color: #0066ff;
-            font-weight: 500;
-        }
-
-        .stats {
-            color: #666;
-            font-size: 0.85rem;
-        }
-
+        
         textarea {
             width: 100%;
-            height: 450px;
-            background: #0a0a0a;
-            border: none;
+            height: 300px;
+            background-color: #0a0a0a;
+            border: 1px solid #1a3f5a;
+            border-radius: 16px;
             padding: 16px;
-            color: #00ff00;
+            color: #c0d0e0;
             font-family: 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.5;
+            font-size: 14px;
             resize: vertical;
             outline: none;
+            transition: border-color 0.2s;
         }
-
+        
+        textarea:focus {
+            border-color: #2a6fa5;
+        }
+        
         textarea::placeholder {
-            color: #333;
+            color: #2a4055;
+            font-style: italic;
         }
-
-        textarea[readonly] {
-            color: #0066ff;
+        
+        .output-area {
+            width: 100%;
+            height: 300px;
+            background-color: #0a0a0a;
+            border: 1px solid #1a3f5a;
+            border-radius: 16px;
+            padding: 16px;
+            color: #c0d0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
-
-        .actions {
+        
+        .output-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .output-area::-webkit-scrollbar-track {
+            background: #0d0d0d;
+        }
+        
+        .output-area::-webkit-scrollbar-thumb {
+            background: #1a4c7a;
+            border-radius: 4px;
+        }
+        
+        .button-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            margin-top: 20px;
             justify-content: center;
-            margin: 20px 0;
             flex-wrap: wrap;
         }
-
+        
         .btn {
-            padding: 10px 30px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.95rem;
+            background-color: transparent;
+            border: 1px solid #1a4c7a;
+            color: #c0d0e0;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
-            transition: 0.2s;
-            background: #111;
-            color: #fff;
-            border: 1px solid #1a1a1a;
+            transition: all 0.2s ease;
+            min-width: 140px;
         }
-
-        .btn-primary {
-            background: #0066ff;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background: #0052cc;
-        }
-
+        
         .btn:hover {
-            background: #1a1a1a;
+            background-color: #1a4c7a;
+            color: #ffffff;
+            border-color: #2a6fa5;
         }
-
-        .btn-small {
-            padding: 5px 12px;
-            font-size: 0.8rem;
+        
+        .btn-primary {
+            background-color: #1a4c7a;
+            color: #ffffff;
+            border-color: #2a6fa5;
         }
-
-        .tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 15px 0;
+        
+        .btn-primary:hover {
+            background-color: #2a6fa5;
         }
-
-        .tag {
-            background: #111;
-            color: #666;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            border: 1px solid #1a1a1a;
-        }
-
-        .tag.active {
-            color: #0066ff;
-            border-color: #0066ff;
-        }
-
+        
         .footer {
+            margin-top: 32px;
             text-align: center;
-            color: #333;
+            color: #1a4c7a;
             font-size: 0.8rem;
-            margin-top: 20px;
+            border-top: 1px solid #1a4c7a;
             padding-top: 20px;
-            border-top: 1px solid #1a1a1a;
         }
-
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .loading.active {
+        
+        .stats {
             display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 16px 0;
+            color: #2a5f7a;
+            font-size: 0.9rem;
         }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid #1a1a1a;
-            border-top-color: #0066ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        
+        .stats span {
+            color: #2a6fa5;
+            font-weight: 600;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #111;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 6px;
-            transform: translateX(400px);
-            transition: 0.3s;
-            z-index: 10000;
-            border-left: 3px solid #0066ff;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.error {
-            border-left-color: #ff0000;
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            textarea, .output-area {
+                height: 200px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-    </div>
-
-    <div class="toast" id="toast">
-        <span id="toastMessage"></span>
-    </div>
-
     <div class="container">
         <div class="header">
-            <h1>MK</h1>
-            <span>functional obfuscator</span>
+            <h1>MK <span>OBFUSCATOR</span></h1>
+            <p>Professional Lua Obfuscation</p>
         </div>
-
+        
         <div class="main-content">
-            <div class="box">
-                <div class="box-header">
-                    <span>INPUT</span>
-                    <div class="stats">
-                        <span id="inputLines">0L</span>
-                        <span id="inputChars">0C</span>
-                    </div>
-                </div>
-                <textarea id="inputScript" placeholder="paste lua code here..."></textarea>
+            <div class="input-section">
+                <div class="section-title">INPUT</div>
+                <textarea id="inputCode" placeholder="Paste your Lua code here...">local player = game:GetService("Players").LocalPlayer
+print("Hello World")</textarea>
             </div>
-
-            <div class="box">
-                <div class="box-header">
-                    <span>OUTPUT</span>
-                    <div class="stats">
-                        <button class="btn btn-small" onclick="copyOutput()">copy</button>
-                        <button class="btn btn-small" onclick="downloadOutput()">save</button>
-                    </div>
-                </div>
-                <textarea id="outputScript" placeholder="obfuscated code..." readonly></textarea>
+            
+            <div class="output-section">
+                <div class="section-title">OUTPUT</div>
+                <div id="outputCode" class="output-area">-- [[ MK OBFUSCATOR 1.0 ]]</div>
             </div>
         </div>
-
-        <div class="actions">
-            <button class="btn btn-primary" onclick="obfuscate()">OBFUSCATE</button>
-            <button class="btn" onclick="loadExample()">example</button>
-            <button class="btn" onclick="clearAll()">clear</button>
+        
+        <div class="button-group">
+            <button class="btn" onclick="obfuscate()">OBFUSCATE</button>
+            <button class="btn" onclick="copyToClipboard()">COPY</button>
+            <button class="btn" onclick="clearAll()">CLEAR</button>
         </div>
-
-        <div class="tags">
-            <span class="tag active">return wrapper</span>
-            <span class="tag active">hex strings</span>
-            <span class="tag active">rename vars</span>
-            <span class="tag active">infinite loops</span>
-            <span class="tag active">compact</span>
-            <span class="tag active">executable</span>
+        
+        <div class="stats">
+            <div>LENGTH: <span id="inputLength">0</span></div>
+            <div>OBFUSCATED: <span id="outputLength">0</span></div>
         </div>
-
+        
         <div class="footer">
-            MK OBFUSCATOR • 100% functional
+            MK OBFUSCATOR 1.0 • BLUE & BLACK EDITION
         </div>
     </div>
 
     <script>
-        const input = document.getElementById('inputScript');
-        const output = document.getElementById('outputScript');
-        const linesSpan = document.getElementById('inputLines');
-        const charsSpan = document.getElementById('inputChars');
-        const loading = document.getElementById('loading');
-        const toast = document.getElementById('toast');
-        const toastMsg = document.getElementById('toastMessage');
-
-        function updateStats() {
-            const t = input.value;
-            linesSpan.textContent = t.split('\n').length + 'L';
-            charsSpan.textContent = t.length + 'C';
-        }
-        input.addEventListener('input', updateStats);
-
-        function showToast(msg, isError) {
-            toastMsg.textContent = msg;
-            toast.classList.add('show');
-            if (isError) toast.classList.add('error');
-            else toast.classList.remove('error');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        function copyOutput() {
-            if (!output.value) return showToast('no output', true);
-            output.select();
-            document.execCommand('copy');
-            showToast('copied');
-        }
-
-        function downloadOutput() {
-            if (!output.value) return showToast('no output', true);
-            const blob = new Blob([output.value], {type: 'text/plain'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'mk_obfuscated.lua';
-            a.click();
-            showToast('downloaded');
-        }
-
-        function loadExample() {
-            input.value = `-- test script
-local function add(a, b)
-    return a + b
-end
-
-local x = 10
-local y = 20
-local z = add(x, y)
-print("result: " .. z)
-
-local t = {1, 2, 3, 4, 5}
-for i = 1, #t do
-    print(t[i])
-end
-
-print("done")`;
-            updateStats();
-            showToast('example loaded');
-        }
-
-        function clearAll() {
-            input.value = '';
-            output.value = '';
-            updateStats();
-            showToast('cleared');
-        }
-
-        function randStr(l) {
-            const c = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
-            let r = '';
-            for (let i = 0; i < l; i++) r += c[Math.floor(Math.random() * c.length)];
-            return r;
-        }
-
-        function toHex(s) {
-            let h = '';
-            for (let i = 0; i < s.length; i++) {
-                let c = s.charCodeAt(i).toString(16);
-                if (c.length < 2) c = '0' + c;
-                h += '\\x' + c;
-            }
-            return h;
-        }
-
         function obfuscate() {
-            const original = input.value.trim();
-            if (!original) return showToast('no input', true);
-
-            loading.classList.add('show');
-
-            setTimeout(() => {
-                try {
-                    const obfuscated = generateObfuscated(original);
-                    output.value = obfuscated;
-                    showToast('obfuscated');
-                } catch (e) {
-                    showToast('error: ' + e.message, true);
-                }
-                loading.classList.remove('show');
-            }, 100);
+            const input = document.getElementById('inputCode').value;
+            if (!input.trim()) {
+                alert('Please enter some code to obfuscate');
+                return;
+            }
+            
+            let obfuscated = obfuscateLua(input);
+            document.getElementById('outputCode').innerText = '-- [[ MK OBFUSCATOR 1.0 ]]\n' + obfuscated;
+            
+            document.getElementById('inputLength').innerText = input.length;
+            document.getElementById('outputLength').innerText = obfuscated.length;
         }
-
-        function generateObfuscated(code) {
-            const varMap = {};
-            let varCount = 0;
-            const prefixes = ['_0x','_0x0','_0x1','_0x2','_0x3','_0x4'];
-
-            // Process code line by line
-            const lines = code.split('\n');
-            const processedLines = [];
-
-            for (let line of lines) {
-                if (line.trim() === '') continue;
-
-                // Find and replace local variables
-                line = line.replace(/local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, (match, varName) => {
-                    if (!varMap[varName]) {
-                        varMap[varName] = prefixes[varCount % prefixes.length] + Math.floor(Math.random() * 999);
-                        varCount++;
+        
+        function obfuscateLua(code) {
+            let result = [];
+            
+            let varNames = {};
+            let varCounter = 0;
+            let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            
+            let lines = code.split('\n');
+            
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                
+                line = line.replace(/local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, function(match, varName) {
+                    if (!varNames[varName]) {
+                        let newName = '_';
+                        for (let j = 0; j < 5 + Math.floor(Math.random() * 5); j++) {
+                            newName += chars[Math.floor(Math.random() * chars.length)];
+                        }
+                        varNames[varName] = newName;
                     }
-                    return 'local ' + varMap[varName];
+                    return 'local ' + varNames[varName];
                 });
-
-                // Replace variable usage
-                for (let [oldName, newName] of Object.entries(varMap)) {
-                    const regex = new RegExp('\\b' + oldName + '\\b', 'g');
-                    line = line.replace(regex, newName);
+                
+                for (let varName in varNames) {
+                    let regex = new RegExp('\\b' + varName + '\\b', 'g');
+                    line = line.replace(regex, varNames[varName]);
                 }
-
-                // Convert strings to hex
-                line = line.replace(/"([^"\\]*(\\.[^"\\]*)*)"/g, (match, str) => {
-                    return '"' + toHex(str) + '"';
+                
+                line = line.replace(/"(.*?)"/g, function(match) {
+                    let encoded = '';
+                    for (let j = 0; j < match.length; j++) {
+                        encoded += '\\' + match.charCodeAt(j);
+                    }
+                    return encoded;
                 });
-                line = line.replace(/'([^'\\]*(\\.[^'\\]*)*)'/g, (match, str) => {
-                    return '"' + toHex(str) + '"';
+                
+                line = line.replace(/'(.*?)'/g, function(match) {
+                    let encoded = '';
+                    for (let j = 0; j < match.length; j++) {
+                        encoded += '\\' + match.charCodeAt(j);
+                    }
+                    return encoded;
                 });
-
-                processedLines.push(line);
+                
+                result.push(line);
             }
-
-            // Generate random table
-            const tableVars = [];
-            for (let i = 0; i < 20; i++) {
-                let s = '';
-                for (let j = 0; j < 5; j++) {
-                    s += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
-                }
-                tableVars.push('`' + btoa(s).replace(/=/g, '') + '`');
-            }
-            const table = 'local A={' + tableVars.join(',') + '}';
-
-            // Generate infinite loops (WITH BREAK - so they execute)
-            const a1 = randStr(4);
-            const a2 = randStr(4);
-            const a3 = randStr(4);
             
-            const loops = 
-                'local ' + a1 + ',' + a2 + ',' + a3 + '=0,1,2' +
-                'while true do' +
-                    a1 + '=' + a1 + '+1' +
-                    a2 + '=' + a2 + '+' + a3 +
-                    'if ' + a1 + '>100 then break end' +
-                'end' +
-                'repeat' +
-                    'local ' + randStr(4) + '=function()' +
-                        'local ' + randStr(4) + '=1' +
-                        'while ' + randStr(4) + '<10 do ' + randStr(4) + '=' + randStr(4) + '+1 end' +
-                        'return ' + randStr(4) +
-                    'end' +
-                'until false';
-
-            // Build final code - COMPACT and EXECUTABLE
-            let final = 'return(function(...)';
-
-            // Add components
-            final += table;
-            final += 'local function d(K)return(A)[K-' + Math.floor(Math.random() * 1000) + ']end';
-            final += 'local l=loadstring or load';
-            final += 'local p=print';
-            final += loops;
+            let finalCode = result.join('\n');
             
-            // Add main processed code (no spaces)
-            final += processedLines.join('').replace(/\s+/g, '');
+            finalCode = 'local _0x = string.char;local _0x0 = {};for _0x00=1,255 do _0x0[_0x00]=_0x(_0x00)end;' +
+                       'local function _0x000(_0x0000)local _0x00000=""for _0x000000=1,#_0x0000 do ' +
+                       'local _0x0000000=_0x0000:byte(_0x000000)_0x00000=_0x00000.._0x0[_0x0000000-13]end;return _0x00000 end;' +
+                       'loadstring(_0x000("' + encodeToNumbers(finalCode) + '"))()';
             
-            // Close wrapper
-            final += 'end)(...)';
-
-            return final;
+            return finalCode;
         }
-
-        // Initialize
-        loadExample();
-        updateStats();
+        
+        function encodeToNumbers(str) {
+            let result = '';
+            for (let i = 0; i < str.length; i++) {
+                let code = str.charCodeAt(i) + 13;
+                result += '\\' + code;
+            }
+            return result;
+        }
+        
+        function copyToClipboard() {
+            let output = document.getElementById('outputCode').innerText;
+            navigator.clipboard.writeText(output).then(function() {
+                alert('Copied to clipboard!');
+            }, function() {
+                alert('Failed to copy');
+            });
+        }
+        
+        function clearAll() {
+            document.getElementById('inputCode').value = '';
+            document.getElementById('outputCode').innerText = '-- [[ MK OBFUSCATOR 1.0 ]]';
+            document.getElementById('inputLength').innerText = '0';
+            document.getElementById('outputLength').innerText = '0';
+        }
+        
+        document.getElementById('inputCode').addEventListener('input', function() {
+            document.getElementById('inputLength').innerText = this.value.length;
+        });
     </script>
 </body>
 </html>
