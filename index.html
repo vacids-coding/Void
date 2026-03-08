@@ -2,316 +2,262 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MK OBFUSCATOR 1.0</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            font-family: 'Courier New', monospace;
         }
         
         body {
-            background-color: #0a0a0a;
+            background: #000000;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 16px;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            background-color: #0d0d0d;
-            border: 1px solid #1a4c7a;
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 20px 40px rgba(0, 40, 80, 0.3);
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
-            border-bottom: 1px solid #1a4c7a;
-            padding-bottom: 20px;
-        }
-        
-        .header h1 {
-            color: #2a6fa5;
-            font-size: 2.5rem;
-            font-weight: 400;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-        }
-        
-        .header h1 span {
-            color: #ffffff;
-            font-weight: 300;
-        }
-        
-        .header p {
-            color: #4a7a9c;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-        
-        .main-content {
-            display: flex;
-            flex-direction: row;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-        
-        .input-section, .output-section {
-            flex: 1 1 300px;
-            background-color: #111111;
-            border: 1px solid #1a3f5a;
-            border-radius: 20px;
             padding: 20px;
         }
         
-        .section-title {
-            color: #2a6fa5;
-            font-size: 1.2rem;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .container {
+            width: 1400px;
+            max-width: 100%;
+            background: #0a0a0a;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 30px;
         }
         
-        .section-title::before {
-            content: "◉";
-            color: #1a4c7a;
-            font-size: 1rem;
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #0066cc;
+            padding-bottom: 20px;
+        }
+        
+        .title h1 {
+            color: #0066cc;
+            font-size: 42px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #0066cc;
+        }
+        
+        .title h1 span {
+            color: #ffffff;
+        }
+        
+        .title p {
+            color: #3399ff;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .main-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .input-area, .output-area {
+            flex: 1;
+            background: #111111;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            padding: 20px;
+        }
+        
+        .input-area label, .output-area label {
+            color: #0066cc;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
         }
         
         textarea {
             width: 100%;
-            height: 300px;
-            background-color: #0a0a0a;
-            border: 1px solid #1a3f5a;
-            border-radius: 16px;
-            padding: 16px;
-            color: #c0d0e0;
-            font-family: 'Courier New', monospace;
+            height: 400px;
+            background: #1a1a1a;
+            border: 1px solid #0066cc;
+            color: #00ff00;
             font-size: 14px;
-            resize: vertical;
+            padding: 15px;
+            resize: none;
             outline: none;
-            transition: border-color 0.2s;
-        }
-        
-        textarea:focus {
-            border-color: #2a6fa5;
         }
         
         textarea::placeholder {
-            color: #2a4055;
-            font-style: italic;
+            color: #336699;
         }
         
-        .output-area {
+        .output-box {
             width: 100%;
-            height: 300px;
-            background-color: #0a0a0a;
-            border: 1px solid #1a3f5a;
-            border-radius: 16px;
-            padding: 16px;
-            color: #c0d0e0;
-            font-family: 'Courier New', monospace;
+            height: 400px;
+            background: #1a1a1a;
+            border: 1px solid #0066cc;
+            color: #00ff00;
             font-size: 14px;
+            padding: 15px;
             overflow-y: auto;
             white-space: pre-wrap;
             word-wrap: break-word;
         }
         
-        .output-area::-webkit-scrollbar {
-            width: 8px;
+        .center-button {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         
-        .output-area::-webkit-scrollbar-track {
-            background: #0d0d0d;
+        .obfuscate-btn {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            letter-spacing: -5px;
+            border-radius: 4px;
+            transition: 0.3s;
         }
         
-        .output-area::-webkit-scrollbar-thumb {
-            background: #1a4c7a;
+        .obfuscate-btn:hover {
+            background: #3399ff;
+            box-shadow: 0 0 20px #0066cc;
+        }
+        
+        .copy-btn {
+            background: #1a1a1a;
+            color: #0066cc;
+            border: 1px solid #0066cc;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
             border-radius: 4px;
         }
         
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            background-color: transparent;
-            border: 1px solid #1a4c7a;
-            color: #c0d0e0;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 140px;
-        }
-        
-        .btn:hover {
-            background-color: #1a4c7a;
-            color: #ffffff;
-            border-color: #2a6fa5;
-        }
-        
-        .btn-primary {
-            background-color: #1a4c7a;
-            color: #ffffff;
-            border-color: #2a6fa5;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2a6fa5;
+        .copy-btn:hover {
+            background: #0066cc;
+            color: white;
         }
         
         .footer {
-            margin-top: 32px;
+            margin-top: 30px;
             text-align: center;
-            color: #1a4c7a;
-            font-size: 0.8rem;
-            border-top: 1px solid #1a4c7a;
+            color: #0066cc;
+            border-top: 1px solid #0066cc;
             padding-top: 20px;
+            font-size: 12px;
         }
         
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin: 16px 0;
-            color: #2a5f7a;
-            font-size: 0.9rem;
-        }
-        
-        .stats span {
-            color: #2a6fa5;
-            font-weight: 600;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 16px;
+        @media (max-width: 900px) {
+            .main-row {
+                flex-direction: column;
             }
             
-            .header h1 {
-                font-size: 1.8rem;
+            .obfuscate-btn {
+                writing-mode: horizontal-tb;
+                padding: 15px 30px;
+                letter-spacing: normal;
             }
             
-            textarea, .output-area {
-                height: 200px;
-            }
-            
-            .btn {
-                width: 100%;
+            textarea, .output-box {
+                height: 300px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="title">
             <h1>MK <span>OBFUSCATOR</span></h1>
-            <p>Professional Lua Obfuscation</p>
+            <p>PROFESSIONAL LUA OBFUSCATION • ANTI-DEOBFUSCATOR</p>
         </div>
         
-        <div class="main-content">
-            <div class="input-section">
-                <div class="section-title">INPUT</div>
-                <textarea id="inputCode" placeholder="Paste your Lua code here...">local player = game:GetService("Players").LocalPlayer
-print("Hello World")</textarea>
+        <div class="main-row">
+            <div class="input-area">
+                <label>INPUT</label>
+                <textarea id="inputCode" placeholder="Paste your Lua code here..."></textarea>
             </div>
             
-            <div class="output-section">
-                <div class="section-title">OUTPUT</div>
-                <div id="outputCode" class="output-area">-- [[ MK OBFUSCATOR 1.0 ]]</div>
+            <div class="center-button">
+                <button class="obfuscate-btn" onclick="obfuscate()">OBFUSCATE</button>
+                <button class="copy-btn" onclick="copyOutput()">COPY</button>
             </div>
-        </div>
-        
-        <div class="button-group">
-            <button class="btn" onclick="obfuscate()">OBFUSCATE</button>
-            <button class="btn" onclick="copyToClipboard()">COPY</button>
-            <button class="btn" onclick="clearAll()">CLEAR</button>
-        </div>
-        
-        <div class="stats">
-            <div>LENGTH: <span id="inputLength">0</span></div>
-            <div>OBFUSCATED: <span id="outputLength">0</span></div>
+            
+            <div class="output-area">
+                <label>OUTPUT</label>
+                <div id="outputCode" class="output-box">-- [[ MK OBFUSCATOR 1.0 ]]</div>
+            </div>
         </div>
         
         <div class="footer">
-            MK OBFUSCATOR 1.0 • BLUE & BLACK EDITION
+            MK OBFUSCATOR 1.0 • BLUE & BLACK EDITION • INFINITE LOOP PROTECTION
         </div>
     </div>
 
     <script>
         function obfuscate() {
-            const input = document.getElementById('inputCode').value;
+            let input = document.getElementById('inputCode').value;
             if (!input.trim()) {
-                alert('Please enter some code to obfuscate');
+                alert('Insert code to obfuscate');
                 return;
             }
             
-            let obfuscated = obfuscateLua(input);
+            let obfuscated = antiDeobfuscator() + '\n\n' + realObfuscator(input);
             document.getElementById('outputCode').innerText = '-- [[ MK OBFUSCATOR 1.0 ]]\n' + obfuscated;
-            
-            document.getElementById('inputLength').innerText = input.length;
-            document.getElementById('outputLength').innerText = obfuscated.length;
         }
         
-        function obfuscateLua(code) {
-            let result = [];
-            
-            let varNames = {};
+        function antiDeobfuscator() {
+            return [[${_G}]]..local _0x00=setmetatable({},{__index=function()while true do end end})..local _0x01=newproxy and newproxy(true) or {}..getmetatable(_0x01).__index=function()return _0x00 end..getmetatable(_0x01).__newindex=function()error("ACCESS DENIED") end..setmetatable(_G,getmetatable(_0x01));
+        }
+        
+        function realObfuscator(code) {
+            let varMap = {};
             let varCounter = 0;
-            let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             
             let lines = code.split('\n');
+            let result = [];
             
             for (let i = 0; i < lines.length; i++) {
                 let line = lines[i];
                 
-                line = line.replace(/local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, function(match, varName) {
-                    if (!varNames[varName]) {
-                        let newName = '_';
-                        for (let j = 0; j < 5 + Math.floor(Math.random() * 5); j++) {
+                line = line.replace(/local\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, function(match, name) {
+                    if (!varMap[name]) {
+                        let newName = "_";
+                        for (let j = 0; j < 8; j++) {
                             newName += chars[Math.floor(Math.random() * chars.length)];
                         }
-                        varNames[varName] = newName;
+                        varMap[name] = newName;
                     }
-                    return 'local ' + varNames[varName];
+                    return "local " + varMap[name];
                 });
                 
-                for (let varName in varNames) {
-                    let regex = new RegExp('\\b' + varName + '\\b', 'g');
-                    line = line.replace(regex, varNames[varName]);
+                for (let name in varMap) {
+                    let regex = new RegExp('\\b' + name + '\\b', 'g');
+                    line = line.replace(regex, varMap[name]);
                 }
                 
                 line = line.replace(/"(.*?)"/g, function(match) {
-                    let encoded = '';
-                    for (let j = 0; j < match.length; j++) {
-                        encoded += '\\' + match.charCodeAt(j);
+                    let encoded = "";
+                    for (let j = 1; j < match.length - 1; j++) {
+                        encoded += "\\" + match.charCodeAt(j);
                     }
-                    return encoded;
+                    return '"' + encoded + '"';
                 });
                 
                 line = line.replace(/'(.*?)'/g, function(match) {
-                    let encoded = '';
-                    for (let j = 0; j < match.length; j++) {
-                        encoded += '\\' + match.charCodeAt(j);
+                    let encoded = "";
+                    for (let j = 1; j < match.length - 1; j++) {
+                        encoded += "\\" + match.charCodeAt(j);
                     }
-                    return encoded;
+                    return "'" + encoded + "'";
                 });
                 
                 result.push(line);
@@ -319,42 +265,19 @@ print("Hello World")</textarea>
             
             let finalCode = result.join('\n');
             
-            finalCode = 'local _0x = string.char;local _0x0 = {};for _0x00=1,255 do _0x0[_0x00]=_0x(_0x00)end;' +
-                       'local function _0x000(_0x0000)local _0x00000=""for _0x000000=1,#_0x0000 do ' +
-                       'local _0x0000000=_0x0000:byte(_0x000000)_0x00000=_0x00000.._0x0[_0x0000000-13]end;return _0x00000 end;' +
-                       'loadstring(_0x000("' + encodeToNumbers(finalCode) + '"))()';
+            finalCode = finalCode.replace(/print/g, "print");
+            finalCode = finalCode.replace(/wait/g, "wait");
+            finalCode = finalCode.replace(/spawn/g, "spawn");
             
             return finalCode;
         }
         
-        function encodeToNumbers(str) {
-            let result = '';
-            for (let i = 0; i < str.length; i++) {
-                let code = str.charCodeAt(i) + 13;
-                result += '\\' + code;
-            }
-            return result;
-        }
-        
-        function copyToClipboard() {
+        function copyOutput() {
             let output = document.getElementById('outputCode').innerText;
             navigator.clipboard.writeText(output).then(function() {
-                alert('Copied to clipboard!');
-            }, function() {
-                alert('Failed to copy');
+                alert('Copied!');
             });
         }
-        
-        function clearAll() {
-            document.getElementById('inputCode').value = '';
-            document.getElementById('outputCode').innerText = '-- [[ MK OBFUSCATOR 1.0 ]]';
-            document.getElementById('inputLength').innerText = '0';
-            document.getElementById('outputLength').innerText = '0';
-        }
-        
-        document.getElementById('inputCode').addEventListener('input', function() {
-            document.getElementById('inputLength').innerText = this.value.length;
-        });
     </script>
 </body>
 </html>
